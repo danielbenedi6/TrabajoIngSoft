@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lista de la Compra</string>
+    <string name="no_notes">No Nay Notas Todavía</string>
+    <string name="action_settings">Configuración</string>
+    <string name="menu_insert_product">Añadir Producto</string>
+    <string name="menu_delete">Eliminar nota</string>
+    <string name="menu_edit">Editar Nota</string>
+    <string name="name">Nombre</string>
+    <string name="price">Coste</string>
+    <string name="weight">Peso</string>
+    <string name="body">Cuerpo</string>
+    <string name="confirm">Confirmar</string>
+    <string name="edit_note">Editar Nota</string>
+    <string name="title_activity_note_edit">Editor de Nota</string>
+</resources>
