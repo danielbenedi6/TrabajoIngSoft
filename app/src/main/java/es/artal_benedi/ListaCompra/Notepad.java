@@ -31,7 +31,7 @@ public class Notepad extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notepadv3);
+        setContentView(R.layout.activity_listas_compra);
 
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();

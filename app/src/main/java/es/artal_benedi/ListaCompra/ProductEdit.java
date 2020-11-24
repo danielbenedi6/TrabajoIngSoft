@@ -1,11 +1,8 @@
 package  es.artal_benedi.ListaCompra;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +18,7 @@ public class ProductEdit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.note_edit);
+        setContentView(R.layout.product_edit);
 
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
@@ -104,7 +101,7 @@ public class ProductEdit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.note_edit);
+        setContentView(R.layout.product_edit);
     }
 
     @Override

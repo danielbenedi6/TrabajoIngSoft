@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Lista de la Compra</string>
-    <string name="no_notes">No Nay Notas Todavía</string>
-    <string name="action_settings">Configuración</string>
+    <string name="no_lists">No Hay Listas Todavía</string>
+    <string name="action_add_list">Nueva Lista</string>
+    <string name="action_product_list">Lista de Productos</string>
     <string name="menu_insert_product">Añadir Producto</string>
     <string name="menu_delete">Eliminar nota</string>
     <string name="menu_edit">Editar Nota</string>
@@ -13,4 +14,7 @@
     <string name="confirm">Confirmar</string>
     <string name="edit_note">Editar Nota</string>
     <string name="title_activity_note_edit">Editor de Nota</string>
+    <string name="no_products">No Hay Productos Todavía</string>
+    <string name="product">Producto:</string>
+    <string name="amount">Cantidad:</string>
 </resources>
