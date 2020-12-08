@@ -3,9 +3,15 @@
     <string name="no_lists">No Lists Yet</string>
     <string name="action_add_list">New List</string>
     <string name="action_product_list">Product List</string>
-    <string name="menu_delete">Delete Note</string>
-    <string name="menu_edit">Edit Note</string>
+    <string name="menu_delete">Delete Product</string>
+    <string name="menu_edit">Edit Product</string>
     <string name="name">Name</string>
+    <string name="show_list">Show List</string>
+    <string name="delete_list">Delete Product</string>
+    <string name="edit_list">Edit Product</string>
+    <string name="order_weight">Order by weight</string>
+    <string name="order_price">Order by price</string>
+    <string name="order_name">Order by name</string>
     <string name="price">Price</string>
     <string name="weight">Weight</string>
     <string name="body">Body</string>
