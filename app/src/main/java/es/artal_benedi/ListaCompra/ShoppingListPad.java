@@ -12,6 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import es.artal_benedi.send.SendAbstraction;
+import es.artal_benedi.send.SendAbstractionImpl;
+
 
 public class ShoppingListPad extends AppCompatActivity {
 
@@ -128,7 +131,7 @@ public class ShoppingListPad extends AppCompatActivity {
         menu.add(Menu.NONE, DELETE_ID, Menu.NONE, R.string.delete_list);
         menu.add(Menu.NONE, EDIT_ID, Menu.NONE, R.string.edit_list);
         menu.add(Menu.NONE, SHOW_ID, Menu.NONE, R.string.show_list);
-        //menu.add(Menu.NONE, SEND_ID, Menu.NONE, R.string.menu_edit);
+        menu.add(Menu.NONE, SEND_ID, Menu.NONE, R.string.send_list);
     }
 
     @Override
@@ -146,6 +149,10 @@ public class ShoppingListPad extends AppCompatActivity {
             case SHOW_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 showList(info.position, info.id);
+                return true;
+            case SEND_ID:
+                info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                sendList(info.position, info.id);
                 return true;
         }
         return super.onContextItemSelected(item);
@@ -173,6 +180,12 @@ public class ShoppingListPad extends AppCompatActivity {
     private void showProducts(){
         Intent i = new Intent(this, ProductPad.class);
         startActivityForResult(i, 0);
+    }
+
+    private void sendList(int position, long id){
+        SendAbstraction sa = new SendAbstractionImpl(this, "EMAIL");
+        //TODO enviar lista por correo
+        sa.send("String subject", "String body");
     }
 
     @Override

@@ -9,6 +9,7 @@
     <string name="menu_edit">Editar Producto</string>
     <string name="show_list">Mostrar Lista</string>
     <string name="delete_list">Borrar Lista</string>
+    <string name="send_list">Enviar Lista</string>
     <string name="edit_list">Editar Lista</string>
     <string name="order_weight">Ordenar por peso</string>
     <string name="order_price">Ordenar por precio</string>

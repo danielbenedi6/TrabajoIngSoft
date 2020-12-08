@@ -20,6 +20,8 @@ public class AddProduct extends AppCompatActivity {
     private Long mContainsId;
     private DbAdapter mDbHelper;
 
+    private static final String CONTAINS_SERIALIZABLE = "CONTAINS_ID";
+
     private class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int pos, long id) {
@@ -44,21 +46,30 @@ public class AddProduct extends AppCompatActivity {
 
         mAmountText = (EditText) findViewById(R.id.editTextNumber);
         mSpinner = (Spinner) findViewById(R.id.spinner);
-        fillData();
+
         SpinnerActivity mSpinnerActivity = new SpinnerActivity();
         mSpinner.setOnItemSelectedListener(mSpinnerActivity);
 
         Button confirmButton = (Button) findViewById(R.id.confirmProduct);
 
         mRowId = (savedInstanceState == null) ? null : (Long) savedInstanceState.getSerializable(DbAdapter.LIST_KEY_ROWID);
+        mContainsId = (savedInstanceState == null) ? null : (Long) savedInstanceState.getSerializable(CONTAINS_SERIALIZABLE);
 
         System.out.println(mRowId);
+        Bundle extras = getIntent().getExtras();
         if(mRowId == null) {
-            Bundle extras = getIntent().getExtras();
             mRowId = (extras != null) ? extras.getLong(DbAdapter.LIST_KEY_ROWID) : null;
         }
+        if(mContainsId == null) {
+            mContainsId = (extras != null) ? extras.getLong(DbAdapter.CONTAINS_KEY_PRODUCTO) : null;
+            if(mContainsId <= 0){
+               mContainsId = null;
+            }
+        }
         System.out.println("RowID (add_product): " + Long.toString(mRowId));
+        fillData();
         populateFields();
+
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
 
@@ -85,13 +96,17 @@ public class AddProduct extends AppCompatActivity {
         SimpleCursorAdapter notes =
                 new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
         mSpinner.setAdapter(notes);
+
+        if(mContainsId != null) {
+            mSpinner.setSelection(mDbHelper.fetchProductIdInList(mContainsId).intValue() - 1);
+        }
     }
 
     private void populateFields(){
         if(mContainsId != null){
             Cursor note = mDbHelper.fetchAmount(mContainsId);
             startManagingCursor(note);
-            mAmountText.setText(note.getString(note.getColumnIndexOrThrow(DbAdapter.CONTAINS_KEY_ROWID)));
+            mAmountText.setText(note.getString(note.getColumnIndexOrThrow(DbAdapter.CONTAINS_KEY_CANTIDAD)));
         }
     }
 
@@ -99,7 +114,8 @@ public class AddProduct extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
         saveState();
-        outState.putSerializable(DbAdapter.CONTAINS_KEY_ROWID, mRowId);
+        outState.putSerializable(DbAdapter.LIST_KEY_ROWID, mRowId);
+        outState.putSerializable(CONTAINS_SERIALIZABLE, mContainsId);
     }
 
     @Override
@@ -131,8 +147,10 @@ public class AddProduct extends AppCompatActivity {
             }
             System.out.format("AL MENOS SE EJECUTA INSERT %s, %s, %s, %s \n", mProductId, mRowId, amount, mContainsId);
         }else if (mContainsId != null && mContainsId >= 0){
-            mDbHelper.updateProductInList(mContainsId, amount);
-            System.out.println("AL MENOS SE EJECUTA UPDATE");
+            if(mDbHelper.updateProductInList(mContainsId, mProductId, amount)){
+                System.out.println("AL MENOS NO FALLA");
+            }
+            System.out.format("AL MENOS SE EJECUTA UPDATE %s, %s, %s, %s \n", mProductId, mRowId, amount, mContainsId);
         }
     }
 }
