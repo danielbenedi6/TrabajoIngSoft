@@ -59,17 +59,17 @@ public class DbAdapter {
      * FOREIGN KEY (lista) REFERENCES listas(_id) ON DELETE CASCADE );
      *
      */
-    private static final String DATABASE_CREATE =
+    private static final String DATABASE_CREATE_PRODUCTOS =
             "CREATE TABLE productos (\n" +
                     "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
                     "nombre TEXT NOT NULL,\n" +
                     "precio DOUBLE NOT NULL,\n" +
                     "peso DOUBLE NOT NULL );";
-    private static final String DATABASE_CREATE2 =
+    private static final String DATABASE_CREATE_LISTAS =
             "CREATE TABLE listas (\n" +
             "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
             "nombre TEXT NOT NULL );";
-    private static final String DATABASE_CREATE3 =
+    private static final String DATABASE_CREATE_CONTIENE =
             "CREATE TABLE contiene (\n" +
             "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
             "producto integer,\n" +
@@ -95,9 +95,9 @@ public class DbAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
             Log.println(Log.VERBOSE, "DATABASEADAPTER", "se crea wey");
-            db.execSQL(DATABASE_CREATE);
-            db.execSQL(DATABASE_CREATE2);
-            db.execSQL(DATABASE_CREATE3);
+            db.execSQL(DATABASE_CREATE_PRODUCTOS);
+            db.execSQL(DATABASE_CREATE_LISTAS);
+            db.execSQL(DATABASE_CREATE_CONTIENE);
 
         }
 
