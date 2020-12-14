@@ -53,11 +53,11 @@ public class ProductPad extends AppCompatActivity {
                 DbAdapter.PRODUCT_KEY_PESO,   DbAdapter.PRODUCT_KEY_PRECIO};
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.text1 };
+        int[] to = new int[] { R.id.productName, R.id.productWeight, R.id.productPrice };
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
-                new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
+                new SimpleCursorAdapter(this, R.layout.product_row, notesCursor, from, to);
         mList.setAdapter(notes);
     }
 
