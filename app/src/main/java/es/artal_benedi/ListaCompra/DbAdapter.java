@@ -48,7 +48,7 @@ public class DbAdapter {
      *
      * CREATE TABLE listas (
      * _id integer PRIMARY KEY AUTOINCREMENT,
-     * nombre TEXT NOT NULL );
+     * );
      *
      * CREATE TABLE contiene (
      * _id integer PRIMARY KEY AUTOINCREMENT,
@@ -65,10 +65,14 @@ public class DbAdapter {
                     "nombre TEXT NOT NULL,\n" +
                     "precio DOUBLE NOT NULL,\n" +
                     "peso DOUBLE NOT NULL );";
+
     private static final String DATABASE_CREATE_LISTAS =
             "CREATE TABLE listas (\n" +
             "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
-            "nombre TEXT NOT NULL );";
+            "nombre TEXT NOT NULL, \n" +
+            "precio DOUBLE NOT NULL,\n" +
+            "peso DOUBLE NOT NULL);";
+
     private static final String DATABASE_CREATE_CONTIENE =
             "CREATE TABLE contiene (\n" +
             "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
@@ -177,7 +181,7 @@ public class DbAdapter {
     public Cursor fetchAllProducts() {
 
         return mDb.query(DATABASE_TABLE_PRODUCTS, new String[] {PRODUCT_KEY_ROWID, PRODUCT_KEY_NAME,
-                PRODUCT_KEY_PRECIO, PRODUCT_KEY_PESO}, null, null, null, null, null);
+                PRODUCT_KEY_PRECIO, PRODUCT_KEY_PESO}, null, null, null, null, "_id");
     }
 
     public Cursor fetchAllProductsOrdered(String orderBy) {
@@ -255,6 +259,21 @@ public class DbAdapter {
 
     }
 
+    public Long fetchProductIdInList(long rowId) throws SQLException {
+
+        Cursor mCursor =
+
+                mDb.query(true, DATABASE_TABLE_CONTAINS, new String[] {CONTAINS_KEY_PRODUCTO},
+                        CONTAINS_KEY_ROWID + "=" + rowId, null,
+                        null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+            return mCursor.getLong(0);
+        }
+        return null;
+
+    }
+
 
 
     /**
@@ -274,9 +293,10 @@ public class DbAdapter {
         return mDb.update(DATABASE_TABLE_PRODUCTS, args, PRODUCT_KEY_ROWID + "=" + rowId, null) > 0;
     }
 
-    public boolean updateProductInList(long idRow, int cantidad) {
+    public boolean updateProductInList(long idRow, long idProducto, int cantidad) {
         ContentValues args = new ContentValues();
         args.put(CONTAINS_KEY_CANTIDAD, cantidad);
+        args.put(CONTAINS_KEY_PRODUCTO, idProducto);
 
         return mDb.update(DATABASE_TABLE_CONTAINS, args, CONTAINS_KEY_ROWID+ "=" + idRow, null) > 0;
     }

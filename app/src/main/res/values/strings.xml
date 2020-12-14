@@ -7,8 +7,9 @@
     <string name="menu_edit">Edit Product</string>
     <string name="name">Name</string>
     <string name="show_list">Show List</string>
-    <string name="delete_list">Delete Product</string>
-    <string name="edit_list">Edit Product</string>
+    <string name="delete_list">Delete List</string>
+    <string name="edit_list">Edit List</string>
+    <string name="send_list">Send List</string>
     <string name="order_weight">Order by weight</string>
     <string name="order_price">Order by price</string>
     <string name="order_name">Order by name</string>

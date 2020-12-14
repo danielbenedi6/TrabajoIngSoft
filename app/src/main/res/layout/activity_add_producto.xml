@@ -22,9 +22,7 @@
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
-            android:layout_weight="1"
-            android:gravity="right|end" />
+            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,10 +42,8 @@
             android:id="@+id/editTextNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
             android:layout_weight="1"
             android:ems="10"
-            android:gravity="right|end"
             android:inputType="number" />
     </LinearLayout>
 

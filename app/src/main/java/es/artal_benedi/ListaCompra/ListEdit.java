@@ -108,20 +108,20 @@ public class ListEdit extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        if(mRowId == null){
-            String name = mNameText.getText().toString();
-            long id = mDbHelper.createShoppingList(name);
-            if(id > 0){
-                mRowId = id;
-            }
-        }
+        saveState();
     }
 
     private void saveState(){
         String name = mNameText.getText().toString();
 
-        mDbHelper.updateShoppingList(mRowId,name);
-
+        if(mRowId == null){
+            long id = mDbHelper.createShoppingList(name);
+            if(id > 0){
+                mRowId = id;
+            }
+        }else{
+            mDbHelper.updateShoppingList(mRowId,name);
+        }
         System.out.println("RowID (saveState list_edit): " + Long.toString(mRowId));
     }
 
