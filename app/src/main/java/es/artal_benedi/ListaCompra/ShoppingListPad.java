@@ -171,8 +171,7 @@ public class ShoppingListPad extends AppCompatActivity {
     }
 
     protected void showList(int position, long id) {
-        //TODO cambiar esto ShowProductsInList o como se llame
-        Intent i = new Intent(this, ShowList.class);
+        Intent i = new Intent(this, ShoppingListShow.class);
         i.putExtra(DbAdapter.LIST_KEY_ROWID, id);
         startActivityForResult(i, 0);
     }
@@ -185,7 +184,21 @@ public class ShoppingListPad extends AppCompatActivity {
     private void sendList(int position, long id){
         SendAbstraction sa = new SendAbstractionImpl(this, "EMAIL");
         //TODO enviar lista por correo
-        sa.send("String subject", "String body");
+        String subject = "", body = "";
+        Cursor cursor = mDbHelper.fetchList(id);
+        if(cursor.moveToFirst()) {
+            subject = cursor.getString(cursor.getColumnIndex(DbAdapter.LIST_KEY_NAME));
+        }
+        cursor = mDbHelper.fetchAllProductsShoppingList(id);
+        try {
+            while (cursor.moveToNext()) {
+                body += cursor.getString(cursor.getColumnIndex(DbAdapter.CONTAINS_KEY_CANTIDAD))+" x "+
+                        cursor.getString(cursor.getColumnIndex(DbAdapter.PRODUCT_KEY_NAME))+"\n";
+            }
+        } finally {
+            cursor.close();
+        }
+        sa.send(subject, body);
     }
 
     @Override

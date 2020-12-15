@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class ShowList extends AppCompatActivity {
+public class ShoppingListShow extends AppCompatActivity {
 
     private DbAdapter mDbHelper;
     private ListView mList;

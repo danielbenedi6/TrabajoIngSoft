@@ -84,6 +84,81 @@ public class DbAdapter {
             "FOREIGN KEY (producto) REFERENCES productos(_id) ON DELETE CASCADE,\n" +
             "FOREIGN KEY (lista) REFERENCES listas(_id) ON DELETE CASCADE );";
 
+    private static final String TRIGGER_INSERT_CONTIENE =
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioInsert\n" +
+            "AFTER  INSERT ON contiene\n" +
+            "FOR EACH ROW\n" +
+            "BEGIN\n" +
+            "\tUPDATE LISTAS\n" +
+            "\tSET precio = newPrecio,\n" +
+            "\t\tpeso =  newPeso\n" +
+            "\tFROM (\tSELECT sum(p.precio * cantidad) newPrecio, sum(p.peso * cantidad) newCantidad\n" +
+            "\t\t\tFROM contiene, productos p\n" +
+            "\t\t\tWHERE lista == NEW.lista AND producto == p._id\n" +
+            "\t\t)\n" +
+            "\tWHERE _id == NEW.lista\n" +
+            "END";
+
+    private static final String TRIGGER_UPDATE_CONTIENE = 
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioUpdate\n" +
+            "AFTER  UPDATE ON contiene\n" +
+            "FOR EACH ROW\n" +
+            "BEGIN\n" +
+            "\tUPDATE LISTAS\n" +
+            "\tSET precio = newPrecio,\n" +
+            "\t\tpeso =  newPeso\n" +
+            "\tFROM (\tSELECT sum(p.precio * cantidad) newPrecio, sum(p.peso * cantidad) newCantidad\n" +
+            "\t\t\tFROM contiene, productos p\n" +
+            "\t\t\tWHERE lista == NEW.lista AND producto == p._id\n" +
+            "\t\t)\n" +
+            "\tWHERE _id == NEW.lista\n" +
+            "END";
+
+    private  static final String TRIGGER_DELETE_CONTIENE =
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioDelete\n" +
+            "AFTER  DELETE ON contiene\n" +
+            "FOR EACH ROW\n" +
+            "BEGIN\n" +
+            "\tUPDATE LISTAS\n" +
+            "\tSET precio = newPrecio,\n" +
+            "\t\tpeso =  newPeso\n" +
+            "\tFROM (\tSELECT sum(p.precio * cantidad) newPrecio, sum(p.peso * cantidad) newCantidad\n" +
+            "\t\t\tFROM contiene, productos p\n" +
+            "\t\t\tWHERE lista == OLD.lista AND producto == p._id\n" +
+            "\t\t)\n" +
+            "\tWHERE _id == OLD.lista\n" +
+            "END";
+
+    private static final String TRIGGER_UPDATE_PRODUCTOS =
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioProductosUpdate\n" +
+            "AFTER  UPDATE ON productos\n" +
+            "FOR EACH ROW\n" +
+            "BEGIN\n" +
+            "\tUPDATE Listas l\n" +
+            "\tSET precio  = newPrecio,\n" +
+            "\t\tpeso \t= newPeso\n" +
+            "\tFROM (\tSELECT sum(precio * cantidad) newPrecio, sum(peso * cantidad) newCantidad\n" +
+            "\t\t\tFROM contiene, productos p\n" +
+            "\t\t\tWHERE lista == l.id AND producto == p._id\n" +
+            "\t\t)\n" +
+            "\tWHERE l._id IN (SELECT listas FROM contiene WHERE producto == NEW._id)\n" +
+            "END";
+
+    private static final String TRIGGER_DELETE_PRODUCTS =
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioProductosUpdate\n" +
+            "AFTER  DELETE ON productos\n" +
+            "FOR EACH ROW\n" +
+            "BEGIN\n" +
+            "\tUPDATE Listas l\n" +
+            "\tSET precio  = newPrecio,\n" +
+            "\t\tpeso \t= newPeso\n" +
+            "\tFROM (\tSELECT sum(p.precio * cantidad) newPrecio, sum(p.peso * cantidad) newCantidad\n" +
+            "\t\t\tFROM contiene, productos p\n" +
+            "\t\t\tWHERE lista == l.id AND producto == p._id\n" +
+            "\t\t)\n" +
+            "\tWHERE l._id IN (SELECT listas FROM contiene WHERE producto == OLD._id)\n" +
+            "END";
+    
     private static final String DATABASE_NAME = "notepad";
     private static final String DATABASE_TABLE_PRODUCTS = "productos";
     private static final String DATABASE_TABLE_LISTS = "listas";
@@ -104,7 +179,11 @@ public class DbAdapter {
             db.execSQL(DATABASE_CREATE_PRODUCTOS);
             db.execSQL(DATABASE_CREATE_LISTAS);
             db.execSQL(DATABASE_CREATE_CONTIENE);
-
+            db.execSQL(TRIGGER_DELETE_CONTIENE);
+            db.execSQL(TRIGGER_DELETE_PRODUCTS);
+            db.execSQL(TRIGGER_INSERT_CONTIENE);
+            db.execSQL(TRIGGER_UPDATE_CONTIENE);
+            db.execSQL(TRIGGER_UPDATE_PRODUCTOS);
         }
 
         @Override
