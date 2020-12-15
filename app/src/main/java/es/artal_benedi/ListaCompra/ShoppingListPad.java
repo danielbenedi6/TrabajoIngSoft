@@ -172,7 +172,7 @@ public class ShoppingListPad extends AppCompatActivity {
 
     protected void showList(int position, long id) {
         //TODO cambiar esto ShowProductsInList o como se llame
-        Intent i = new Intent(this, ListEdit.class);
+        Intent i = new Intent(this, ShowList.class);
         i.putExtra(DbAdapter.LIST_KEY_ROWID, id);
         startActivityForResult(i, 0);
     }

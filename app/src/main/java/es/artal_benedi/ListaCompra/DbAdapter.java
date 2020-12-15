@@ -27,6 +27,8 @@ public class DbAdapter {
 
     public static final String LIST_KEY_NAME = "nombre";
     public static final String LIST_KEY_ROWID = "_id";
+    public static final String LIST_KEY_PRECIO = "precio";
+    public static final String LIST_KEY_PESO = "peso";
 
     public static final String CONTAINS_KEY_LISTA = "lista";
     public static final String CONTAINS_KEY_PRODUCTO = "producto";
