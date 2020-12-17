@@ -67,6 +67,7 @@ public class AddProduct extends AppCompatActivity {
             }
         }
         System.out.println("RowID (add_product): " + Long.toString(mRowId));
+        System.out.println("RowID (add_product): " + Long.toString(mContainsId));
         fillData();
         populateFields();
 

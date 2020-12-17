@@ -29,7 +29,6 @@ public class ListEdit extends AppCompatActivity {
     private Long mRowId;
 
 
-
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,20 +107,18 @@ public class ListEdit extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        saveState();
-    }
-
-    private void saveState(){
         String name = mNameText.getText().toString();
-
         if(mRowId == null){
             long id = mDbHelper.createShoppingList(name);
             if(id > 0){
                 mRowId = id;
             }
-        }else{
-            mDbHelper.updateShoppingList(mRowId,name);
         }
+    }
+
+    private void saveState(){
+        String name = mNameText.getText().toString();
+        mDbHelper.updateShoppingList(mRowId,name);
         System.out.println("RowID (saveState list_edit): " + Long.toString(mRowId));
     }
 
@@ -176,8 +173,9 @@ public class ListEdit extends AppCompatActivity {
 
 
     protected void editProductInList(int position, long id) {
-        Intent i = new Intent(this, ProductEdit.class);
-        i.putExtra(DbAdapter.CONTAINS_KEY_ROWID, id);
+        Intent i = new Intent(this, AddProduct.class);
+        i.putExtra(DbAdapter.CONTAINS_KEY_PRODUCTO, id);
+        i.putExtra(DbAdapter.LIST_KEY_ROWID, mRowId);
         startActivityForResult(i, ACTIVITY_EDIT);
     }
 
