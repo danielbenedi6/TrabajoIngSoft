@@ -66,8 +66,8 @@ public class AddProduct extends AppCompatActivity {
                mContainsId = null;
             }
         }
-        System.out.println("RowID (add_product): " + Long.toString(mRowId));
-        System.out.println("RowID (add_product): " + Long.toString(mContainsId));
+        //System.out.println("RowID (add_product): " + Long.toString(mRowId));
+        //System.out.println("RowID (add_product): " + Long.toString(mContainsId));
         fillData();
         populateFields();
 
@@ -91,11 +91,11 @@ public class AddProduct extends AppCompatActivity {
         String[] from = new String[] { DbAdapter.PRODUCT_KEY_NAME };
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.text1 };
+        int[] to = new int[] { R.id.SpinnerProduct };
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
-                new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
+                new SimpleCursorAdapter(this, R.layout.spinner_row, notesCursor, from, to);
         mSpinner.setAdapter(notes);
 
         if(mContainsId != null) {

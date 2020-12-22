@@ -62,101 +62,81 @@ public class DbAdapter {
      *
      */
     private static final String DATABASE_CREATE_PRODUCTOS =
-            "CREATE TABLE productos (\n" +
-                    "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
-                    "nombre TEXT NOT NULL,\n" +
-                    "precio DOUBLE NOT NULL,\n" +
+            "CREATE TABLE productos ( " +
+                    "_id integer PRIMARY KEY AUTOINCREMENT, " +
+                    "nombre TEXT NOT NULL, " +
+                    "precio DOUBLE NOT NULL, " +
                     "peso DOUBLE NOT NULL );";
 
     private static final String DATABASE_CREATE_LISTAS =
-            "CREATE TABLE listas (\n" +
-            "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
-            "nombre TEXT NOT NULL, \n" +
-            "precio DOUBLE NOT NULL,\n" +
+            "CREATE TABLE listas ( " +
+            "_id integer PRIMARY KEY AUTOINCREMENT, " +
+            "nombre TEXT NOT NULL,  " +
+            "precio DOUBLE NOT NULL, " +
             "peso DOUBLE NOT NULL);";
 
     private static final String DATABASE_CREATE_CONTIENE =
-            "CREATE TABLE contiene (\n" +
-            "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
-            "producto integer,\n" +
-            "lista integer,\n" +
-            "cantidad integer NOT NULL,\n" +
-            "FOREIGN KEY (producto) REFERENCES productos(_id) ON DELETE CASCADE,\n" +
+            "CREATE TABLE contiene ( " +
+            "_id integer PRIMARY KEY AUTOINCREMENT, " +
+            "producto integer, " +
+            "lista integer, " +
+            "cantidad integer NOT NULL, " +
+            "FOREIGN KEY (producto) REFERENCES productos(_id) ON DELETE CASCADE, " +
             "FOREIGN KEY (lista) REFERENCES listas(_id) ON DELETE CASCADE );";
 
     private static final String TRIGGER_INSERT_CONTIENE =
-            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioInsert\n" +
-            "AFTER  INSERT ON contiene\n" +
-            "FOR EACH ROW\n" +
-            "BEGIN\n" +
-            "\tUPDATE LISTAS\n" +
-            "\tSET precio = newPrecio,\n" +
-            "\t\tpeso =  newPeso\n" +
-            "\tFROM (\tSELECT sum(p.precio * cantidad) newPrecio, sum(p.peso * cantidad) newCantidad\n" +
-            "\t\t\tFROM contiene, productos p\n" +
-            "\t\t\tWHERE lista == NEW.lista AND producto == p._id\n" +
-            "\t\t)\n" +
-            "\tWHERE _id == NEW.lista\n" +
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioInsert " +
+            "AFTER  INSERT ON contiene " +
+            "FOR EACH ROW " +
+            "BEGIN " +
+            " UPDATE LISTAS" +
+            " SET precio = (SELECT sum(p.precio*cantidad) FROM contiene, productos p WHERE lista == NEW.lista AND producto == p._id), " +
+            "  peso = (SELECT sum(p.peso*cantidad) FROM contiene, productos p WHERE lista == NEW.lista AND producto == p._id) " +
+            " WHERE _id == NEW.lista;" +
             "END";
 
     private static final String TRIGGER_UPDATE_CONTIENE = 
-            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioUpdate\n" +
-            "AFTER  UPDATE ON contiene\n" +
-            "FOR EACH ROW\n" +
-            "BEGIN\n" +
-            "\tUPDATE LISTAS\n" +
-            "\tSET precio = newPrecio,\n" +
-            "\t\tpeso =  newPeso\n" +
-            "\tFROM (\tSELECT sum(p.precio * cantidad) newPrecio, sum(p.peso * cantidad) newCantidad\n" +
-            "\t\t\tFROM contiene, productos p\n" +
-            "\t\t\tWHERE lista == NEW.lista AND producto == p._id\n" +
-            "\t\t)\n" +
-            "\tWHERE _id == NEW.lista\n" +
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioUpdate " +
+            "AFTER  UPDATE ON contiene " +
+            "FOR EACH ROW " +
+            "BEGIN " +
+            " UPDATE LISTAS" +
+            " SET precio = (SELECT sum(p.precio*cantidad) FROM contiene, productos p WHERE lista == NEW.lista AND producto == p._id), " +
+            "  peso = (SELECT sum(p.peso*cantidad) FROM contiene, productos p WHERE lista == NEW.lista AND producto == p._id) " +
+            " WHERE _id == NEW.lista;" +
             "END";
 
     private  static final String TRIGGER_DELETE_CONTIENE =
-            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioDelete\n" +
-            "AFTER  DELETE ON contiene\n" +
-            "FOR EACH ROW\n" +
-            "BEGIN\n" +
-            "\tUPDATE LISTAS\n" +
-            "\tSET precio = newPrecio,\n" +
-            "\t\tpeso =  newPeso\n" +
-            "\tFROM (\tSELECT sum(p.precio * cantidad) newPrecio, sum(p.peso * cantidad) newCantidad\n" +
-            "\t\t\tFROM contiene, productos p\n" +
-            "\t\t\tWHERE lista == OLD.lista AND producto == p._id\n" +
-            "\t\t)\n" +
-            "\tWHERE _id == OLD.lista\n" +
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioDelete " +
+            "AFTER  DELETE ON contiene " +
+            "FOR EACH ROW " +
+            "BEGIN " +
+            " UPDATE LISTAS " +
+            " SET precio = (SELECT sum(p.precio*cantidad) FROM contiene, productos p WHERE lista == OLD.lista AND producto == p._id), " +
+            "  peso = (SELECT sum(p.peso*cantidad) FROM contiene, productos p WHERE lista == OLD.lista AND producto == p._id) " +
+            " WHERE _id == OLD.lista;" +
             "END";
 
     private static final String TRIGGER_UPDATE_PRODUCTOS =
-            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioProductosUpdate\n" +
-            "AFTER  UPDATE ON productos\n" +
-            "FOR EACH ROW\n" +
-            "BEGIN\n" +
-            "\tUPDATE Listas l\n" +
-            "\tSET precio  = newPrecio,\n" +
-            "\t\tpeso \t= newPeso\n" +
-            "\tFROM (\tSELECT sum(precio * cantidad) newPrecio, sum(peso * cantidad) newCantidad\n" +
-            "\t\t\tFROM contiene, productos p\n" +
-            "\t\t\tWHERE lista == l.id AND producto == p._id\n" +
-            "\t\t)\n" +
-            "\tWHERE l._id IN (SELECT listas FROM contiene WHERE producto == NEW._id)\n" +
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioProductosUpdate " +
+            "AFTER  UPDATE ON productos " +
+            "FOR EACH ROW " +
+            "BEGIN " +
+            " UPDATE Listas" +
+            " SET precio  = ( SELECT sum(p.precio * c.cantidad) FROM contiene c, productos p WHERE c.lista == _id AND c.producto == p._id ), " +
+            "   peso  = ( SELECT sum(p.peso * c.cantidad) FROM contiene c, productos p WHERE c.lista == _id AND c.producto == p._id ) " +
+            " WHERE _id IN (SELECT listas FROM contiene WHERE producto == NEW._id);" +
             "END";
 
     private static final String TRIGGER_DELETE_PRODUCTS =
-            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioProductosUpdate\n" +
-            "AFTER  DELETE ON productos\n" +
-            "FOR EACH ROW\n" +
-            "BEGIN\n" +
-            "\tUPDATE Listas l\n" +
-            "\tSET precio  = newPrecio,\n" +
-            "\t\tpeso \t= newPeso\n" +
-            "\tFROM (\tSELECT sum(p.precio * cantidad) newPrecio, sum(p.peso * cantidad) newCantidad\n" +
-            "\t\t\tFROM contiene, productos p\n" +
-            "\t\t\tWHERE lista == l.id AND producto == p._id\n" +
-            "\t\t)\n" +
-            "\tWHERE l._id IN (SELECT listas FROM contiene WHERE producto == OLD._id)\n" +
+            "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioProductosUpdate " +
+            "AFTER  DELETE ON productos " +
+            "FOR EACH ROW " +
+            "BEGIN " +
+            " UPDATE Listas" +
+            " SET precio  = ( SELECT sum(p.precio * c.cantidad) FROM contiene c, productos p WHERE c.lista == _id AND c.producto == p._id ), " +
+            "   peso  = ( SELECT sum(p.peso * c.cantidad) FROM contiene c, productos p WHERE c.lista == _id AND c.producto == p._id ) " +
+            " WHERE _id IN (SELECT listas FROM contiene WHERE producto == OLD._id);" +
             "END";
     
     private static final String DATABASE_NAME = "notepad";
@@ -316,7 +296,7 @@ public class DbAdapter {
 
         Cursor mCursor =
 
-                mDb.query(true, DATABASE_TABLE_LISTS, new String[] {LIST_KEY_ROWID, LIST_KEY_NAME},
+                mDb.query(true, DATABASE_TABLE_LISTS, new String[] {LIST_KEY_ROWID, LIST_KEY_NAME, LIST_KEY_PRECIO, LIST_KEY_PESO},
                         LIST_KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
@@ -398,6 +378,8 @@ public class DbAdapter {
     public long createShoppingList(String nombre){
         ContentValues initialValues = new ContentValues();
         initialValues.put(LIST_KEY_NAME, nombre);
+        initialValues.put(LIST_KEY_PESO, 0.0); //Como la nota xd salu2
+        initialValues.put(LIST_KEY_PRECIO, 0.0);
         return mDb.insert(DATABASE_TABLE_LISTS, null, initialValues);
     }
 

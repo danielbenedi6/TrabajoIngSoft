@@ -60,11 +60,11 @@ public class ShoppingListPad extends AppCompatActivity {
         String[] from = new String[] { DbAdapter.LIST_KEY_NAME };
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.text1 };
+        int[] to = new int[] { R.id.ItemList };
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
-                new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
+                new SimpleCursorAdapter(this, R.layout.shoppinglistpad_row, notesCursor, from, to);
         mList.setAdapter(notes);
     }
 
@@ -76,11 +76,11 @@ public class ShoppingListPad extends AppCompatActivity {
         String[] from = new String[] { DbAdapter.LIST_KEY_NAME };
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.text1 };
+        int[] to = new int[] { R.id.ItemList };
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
-                new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
+                new SimpleCursorAdapter(this, R.layout.shoppinglistpad_row, notesCursor, from, to);
         mList.setAdapter(notes);
     }
 
@@ -112,12 +112,10 @@ public class ShoppingListPad extends AppCompatActivity {
                 fillDataOrdered(DbAdapter.LIST_KEY_NAME);
                 return true;
             case ORDER_PRICE_ID:
-                //TODO hacerlo bien
-                fillDataOrdered(DbAdapter.LIST_KEY_NAME);
+                fillDataOrdered(DbAdapter.LIST_KEY_PRECIO);
                 return true;
             case ORDER_WEIGHT_ID:
-                //TODO hacerlo bien
-                fillDataOrdered(DbAdapter.LIST_KEY_NAME);
+                fillDataOrdered(DbAdapter.LIST_KEY_PESO);
                 return true;
 
         }

@@ -15,6 +15,8 @@
     <string name="order_name">Order by name</string>
     <string name="price">Price</string>
     <string name="weight">Weight</string>
+    <string name="ProductPrice">Price: </string>
+    <string name="ProductWeight">Weight: </string>
     <string name="body">Body</string>
     <string name="confirm">Confirm</string>
     <string name="edit_note">Edit Note</string>
@@ -23,4 +25,5 @@
     <string name="no_products">No Products Yet</string>
     <string name="product">Product:</string>
     <string name="amount">Amount:</string>
+    <string name="cross">x</string>
 </resources>

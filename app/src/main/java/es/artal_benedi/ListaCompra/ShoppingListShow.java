@@ -49,25 +49,24 @@ public class ShoppingListShow extends AppCompatActivity {
 
     private void populateFields(){
         if(mRowId != null){
-            //TODO depurar triggers de precio y peso lista y añadirlo al fetchList
             Cursor note = mDbHelper.fetchList(mRowId);
             startManagingCursor(note);
             mNameText.setText(note.getString(note.getColumnIndexOrThrow(DbAdapter.LIST_KEY_NAME)));
-            //mPriceText.setText(note.getString(note.getColumnIndexOrThrow(DbAdapter.LIST_KEY_PRECIO)));
-            //mWeightText.setText(note.getString(note.getColumnIndexOrThrow(DbAdapter.LIST_KEY_PESO)));
+            mPriceText.setText(Double.toString(note.getDouble(note.getColumnIndexOrThrow(DbAdapter.LIST_KEY_PRECIO))));
+            mWeightText.setText(Double.toString(note.getDouble(note.getColumnIndexOrThrow(DbAdapter.LIST_KEY_PESO))));
             fillData();
         }
     }
 
-    private void fillData(){
+    private void fillData() {
         // Get all of the notes from the database and create the item list
         Cursor notesCursor = mDbHelper.fetchAllProductsShoppingList(mRowId);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[] { DbAdapter.PRODUCT_KEY_NAME, DbAdapter.CONTAINS_KEY_CANTIDAD};
+        String[] from = new String[]{DbAdapter.PRODUCT_KEY_NAME, DbAdapter.CONTAINS_KEY_CANTIDAD};
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.text1 };
+        int[] to = new int[]{R.id.product, R.id.amount};
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =

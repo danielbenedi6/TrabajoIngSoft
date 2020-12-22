@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 public class ListEdit extends AppCompatActivity {
 
@@ -83,11 +84,15 @@ public class ListEdit extends AppCompatActivity {
         String[] from = new String[] { DbAdapter.PRODUCT_KEY_NAME, DbAdapter.CONTAINS_KEY_CANTIDAD};
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.text1 };
+        int[] to = new int[] { R.id.product, R.id.amount };
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
                 new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
+        if(!notes.isEmpty()){
+            TextView noProduct = (TextView)findViewById(R.id.empty);
+            noProduct.setVisibility(View.INVISIBLE);
+        }
         mList.setAdapter(notes);
     }
 

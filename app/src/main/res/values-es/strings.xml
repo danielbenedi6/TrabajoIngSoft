@@ -17,6 +17,8 @@
     <string name="name">Nombre</string>
     <string name="price">Coste</string>
     <string name="weight">Peso</string>
+    <string name="ProductPrice">Coste: </string>
+    <string name="ProductWeight">Peso: </string>
     <string name="body">Cuerpo</string>
     <string name="confirm">Confirmar</string>
     <string name="edit_note">Editar Nota</string>
@@ -24,4 +26,5 @@
     <string name="no_products">No Hay Productos Todavía</string>
     <string name="product">Producto:</string>
     <string name="amount">Cantidad:</string>
+    <string name="cross">x</string>
 </resources>
