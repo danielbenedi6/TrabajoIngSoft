@@ -47,7 +47,9 @@ public class ShoppingListPad extends AppCompatActivity {
         mDbHelper.open();
         mList = (ListView) findViewById(R.id.list);
         fillData();
-
+        Test.runTestListas(mDbHelper);
+        Test.runTestProducts(mDbHelper);
+        Test.runTestProductosLista(mDbHelper);
         registerForContextMenu(mList);
 
     }

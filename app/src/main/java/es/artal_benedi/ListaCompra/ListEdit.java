@@ -113,6 +113,7 @@ public class ListEdit extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         String name = mNameText.getText().toString();
+        if(name.isEmpty()) name = "lista_temporal";
         if(mRowId == null){
             long id = mDbHelper.createShoppingList(name);
             if(id > 0){
@@ -123,6 +124,7 @@ public class ListEdit extends AppCompatActivity {
 
     private void saveState(){
         String name = mNameText.getText().toString();
+        if(name.isEmpty()) name = "lista_temporal";
         mDbHelper.updateShoppingList(mRowId,name);
         System.out.println("RowID (saveState list_edit): " + Long.toString(mRowId));
     }

@@ -125,7 +125,7 @@ public class DbAdapter {
             " UPDATE Listas" +
             " SET precio  = ( SELECT sum(p.precio * c.cantidad) FROM contiene c, productos p WHERE c.lista == _id AND c.producto == p._id ), " +
             "   peso  = ( SELECT sum(p.peso * c.cantidad) FROM contiene c, productos p WHERE c.lista == _id AND c.producto == p._id ) " +
-            " WHERE _id IN (SELECT listas FROM contiene WHERE producto == NEW._id);" +
+            " WHERE _id IN (SELECT lista FROM contiene WHERE producto == NEW._id);" +
             "END";
 
     private static final String TRIGGER_DELETE_PRODUCTS =
@@ -134,9 +134,9 @@ public class DbAdapter {
             "FOR EACH ROW " +
             "BEGIN " +
             " UPDATE Listas" +
-            " SET precio  = ( SELECT sum(p.precio * c.cantidad) FROM contiene c, productos p WHERE c.lista == _id AND c.producto == p._id ), " +
-            "   peso  = ( SELECT sum(p.peso * c.cantidad) FROM contiene c, productos p WHERE c.lista == _id AND c.producto == p._id ) " +
-            " WHERE _id IN (SELECT listas FROM contiene WHERE producto == OLD._id);" +
+            " SET precio  = ( SELECT sum(p.precio * c.cantidad) FROM contiene c, productos p WHERE c.lista == OLD._id AND c.producto == p._id ), " +
+            "   peso  = ( SELECT sum(p.peso * c.cantidad) FROM contiene c, productos p WHERE c.lista == OLD._id AND c.producto == p._id ) " +
+            " WHERE _id IN (SELECT lista FROM contiene WHERE producto == OLD._id);" +
             "END";
     
     private static final String DATABASE_NAME = "notepad";
@@ -215,12 +215,17 @@ public class DbAdapter {
      * @return rowId or -1 if failed
      */
     public long createProduct(String nombre, double precio, double peso) {
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(PRODUCT_KEY_NAME, nombre);
-        initialValues.put(PRODUCT_KEY_PRECIO, precio);
-        initialValues.put(PRODUCT_KEY_PESO, peso);
+        if(nombre != null && !nombre.isEmpty()) {
+            ContentValues initialValues = new ContentValues();
+            initialValues.put(PRODUCT_KEY_NAME, nombre);
+            initialValues.put(PRODUCT_KEY_PRECIO, precio);
+            initialValues.put(PRODUCT_KEY_PESO, peso);
+            return mDb.insert(DATABASE_TABLE_PRODUCTS, null, initialValues);
+        } else{
+            return -1;
+        }
 
-        return mDb.insert(DATABASE_TABLE_PRODUCTS, null, initialValues);
+
     }
 
     /**
@@ -346,20 +351,26 @@ public class DbAdapter {
      * @return true if the note was successfully updated, false otherwise
      */
     public boolean updateProduct(long rowId, String nombre, double precio, double peso) {
-        ContentValues args = new ContentValues();
-        args.put(PRODUCT_KEY_NAME, nombre);
-        args.put(PRODUCT_KEY_PRECIO, precio);
-        args.put(PRODUCT_KEY_PESO, peso);
-
-        return mDb.update(DATABASE_TABLE_PRODUCTS, args, PRODUCT_KEY_ROWID + "=" + rowId, null) > 0;
+        if(nombre != null && !nombre.isEmpty()) {
+            ContentValues args = new ContentValues();
+            args.put(PRODUCT_KEY_NAME, nombre);
+            args.put(PRODUCT_KEY_PRECIO, precio);
+            args.put(PRODUCT_KEY_PESO, peso);
+            return mDb.update(DATABASE_TABLE_PRODUCTS, args, PRODUCT_KEY_ROWID + "=" + rowId, null) > 0;
+        } else {
+            return false;
+        }
     }
 
     public boolean updateProductInList(long idRow, long idProducto, int cantidad) {
-        ContentValues args = new ContentValues();
-        args.put(CONTAINS_KEY_CANTIDAD, cantidad);
-        args.put(CONTAINS_KEY_PRODUCTO, idProducto);
-
-        return mDb.update(DATABASE_TABLE_CONTAINS, args, CONTAINS_KEY_ROWID+ "=" + idRow, null) > 0;
+        if(idRow > 0 && idProducto > 0 && cantidad > 0) {
+            ContentValues args = new ContentValues();
+            args.put(CONTAINS_KEY_CANTIDAD, cantidad);
+            args.put(CONTAINS_KEY_PRODUCTO, idProducto);
+            return mDb.update(DATABASE_TABLE_CONTAINS, args, CONTAINS_KEY_ROWID + "=" + idRow, null) > 0;
+        } else {
+            return false;
+        }
     }
 
     public boolean deleteProductInList(long idRow) {
@@ -367,28 +378,40 @@ public class DbAdapter {
     }
 
     public long addProductToList(long idList, long idProduct, int cantidad){
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(CONTAINS_KEY_LISTA, idList);
-        initialValues.put(CONTAINS_KEY_PRODUCTO, idProduct);
-        initialValues.put(CONTAINS_KEY_CANTIDAD, cantidad);
-        return mDb.insert(DATABASE_TABLE_CONTAINS, null, initialValues);
+        if(cantidad > 0 && idList > 0 && idProduct > 0) {
+            ContentValues initialValues = new ContentValues();
+            initialValues.put(CONTAINS_KEY_LISTA, idList);
+            initialValues.put(CONTAINS_KEY_PRODUCTO, idProduct);
+            initialValues.put(CONTAINS_KEY_CANTIDAD, cantidad);
+            return mDb.insert(DATABASE_TABLE_CONTAINS, null, initialValues);
+        } else {
+            return -1;
+        }
     }
 
 
     public long createShoppingList(String nombre){
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(LIST_KEY_NAME, nombre);
-        initialValues.put(LIST_KEY_PESO, 0.0); //Como la nota xd salu2
-        initialValues.put(LIST_KEY_PRECIO, 0.0);
-        return mDb.insert(DATABASE_TABLE_LISTS, null, initialValues);
+        if(nombre != null && !nombre.isEmpty()) {
+            ContentValues initialValues = new ContentValues();
+            initialValues.put(LIST_KEY_NAME, nombre);
+            initialValues.put(LIST_KEY_PESO, 0.0); //Como la nota xd salu2
+            initialValues.put(LIST_KEY_PRECIO, 0.0);
+            return mDb.insert(DATABASE_TABLE_LISTS, null, initialValues);
+        } else {
+            return -1;
+        }
     }
 
     public boolean updateShoppingList(long rowId, String nombre) {
-        ContentValues args = new ContentValues();
-        args.put(LIST_KEY_NAME, nombre);
-
-        return mDb.update(DATABASE_TABLE_LISTS, args, LIST_KEY_ROWID + "=" + rowId, null) > 0;
+        if(nombre != null && !nombre.isEmpty()) {
+            ContentValues args = new ContentValues();
+            args.put(LIST_KEY_NAME, nombre);
+            return mDb.update(DATABASE_TABLE_LISTS, args, LIST_KEY_ROWID + "=" + rowId, null) > 0;
+        } else {
+            return false;
+        }
     }
+
 
     public boolean deleteShoppingList(long rowId) {
         return mDb.delete(DATABASE_TABLE_LISTS, LIST_KEY_ROWID + "=" + rowId, null) > 0;

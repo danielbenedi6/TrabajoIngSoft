@@ -212,7 +212,8 @@ public class ProductEdit extends AppCompatActivity {
 
     private void saveState(){
         String name = mNameText.getText().toString();
-        System.out.println(name + "klkmanin");
+        if(name.isEmpty()) name = "producto_temporal";
+        System.out.println(name + " klkmanin");
         double price = 0.0;
         double weight = 0.0;
         if (!mPriceText.getText().toString().isEmpty())
