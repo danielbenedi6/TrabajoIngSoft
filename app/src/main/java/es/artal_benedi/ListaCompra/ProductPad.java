@@ -23,6 +23,8 @@ public class ProductPad extends AppCompatActivity {
     private static final int ORDER_NAME_ID = Menu.FIRST + 3;
     private static final int ORDER_PRICE_ID = Menu.FIRST + 4;
     private static final int ORDER_WEIGHT_ID = Menu.FIRST + 5;
+    private static final int PRUEBA_ID = Menu.FIRST + 6;
+    private static final int BORRAR_PRUEBA_ID = Menu.FIRST + 7;
 
     private DbAdapter mDbHelper;
     private ListView mList;
@@ -86,6 +88,8 @@ public class ProductPad extends AppCompatActivity {
         menu.add(Menu.NONE, ORDER_NAME_ID, Menu.NONE, R.string.order_name);
         menu.add(Menu.NONE, ORDER_PRICE_ID, Menu.NONE, R.string.order_price);
         menu.add(Menu.NONE, ORDER_WEIGHT_ID, Menu.NONE, R.string.order_weight);
+        menu.add(Menu.NONE, PRUEBA_ID, Menu.NONE, "Test");
+        menu.add(Menu.NONE, BORRAR_PRUEBA_ID, Menu.NONE, "Delete Test");
         return result;
     }
 
@@ -107,6 +111,14 @@ public class ProductPad extends AppCompatActivity {
             case ORDER_WEIGHT_ID:
                 //TODO hacerlo bien
                 fillDataOrdered(DbAdapter.PRODUCT_KEY_PESO);
+                return true;
+            case PRUEBA_ID:
+                Test.casiPetardoTest(mDbHelper);
+                fillData();
+                return true;
+            case BORRAR_PRUEBA_ID:
+                Test.borrarCasiPetardoTest(mDbHelper);
+                fillData();
                 return true;
         }
         return super.onOptionsItemSelected(item);

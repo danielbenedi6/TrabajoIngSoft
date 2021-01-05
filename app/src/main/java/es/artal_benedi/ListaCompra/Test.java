@@ -354,7 +354,7 @@ public class Test {
 
     public static void casiPetardoTest(DbAdapter nda){
         boolean error = false;
-        int i;
+        int i = 0;
         long id = 0;
         for(i=0; i<1000 && !error; i++){
             if((id = nda.createProduct("PRUEBA_VOLUMEN: "+i, 10.0, 10.0))<0) {
@@ -362,6 +362,7 @@ public class Test {
                 error = true;
             }
         }
+        System.out.println("CasiPetardoTest: "+i);
         /*
         for(int j=0; j<i ; j++){
             if(!nda.deleteNote(id)){
@@ -377,14 +378,15 @@ public class Test {
 
     public static void casiPetardoListasTest(DbAdapter nda){
         boolean error = false;
-        int i;
+        int i = 0;
         long id = 0;
         for(i=0; i<100 && !error; i++){
-            if((id = nda.createShoppingList("PRUEBA_VOLUMEN: "))<0) {
+            if((id = nda.createShoppingList("PRUEBA_VOLUMEN: "+i))<0) {
                 Log.d("LISTAS: CASO VOLUMEN", "MAL");
                 error = true;
             }
         }
+        System.out.println("CasiPetardoListasTest: "+i);
         /*
         for(int j=0; j<i ; j++){
             if(!nda.deleteNote(id)){
@@ -401,11 +403,14 @@ public class Test {
     public static void borrarCasiPetardoListasTest(DbAdapter nda){
         Cursor cursor = nda.fetchAllShoppingLists();
         try{
+            int i =0;
             while(cursor.moveToNext()) {
                 if (cursor.getString(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_NAME)).contains("PRUEBA_VOLUMEN: ")) {
-                    nda.deleteProduct(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_ROWID)));
+                    nda.deleteShoppingList(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_ROWID)));
+                    i++;
                 }
             }
+            System.out.println("BorrarCasiPetardoListasTest: "+i);
         } catch(Exception e){
             Log.d("LISTAS: CASO VOLUMEN", "EXCEPCION AL BORRAR");
 
@@ -418,11 +423,14 @@ public class Test {
     public static void borrarCasiPetardoTest(DbAdapter nda){
         Cursor cursor = nda.fetchAllProducts();
         try{
+            int i =0;
             while(cursor.moveToNext()) {
                 if (cursor.getString(cursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_NAME)).contains("PRUEBA_VOLUMEN: ")) {
                     nda.deleteProduct(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_ROWID)));
+                    i++;
                 }
             }
+            System.out.println("BorrarCasiPetardoTest: "+i);
         } catch(Exception e){
             Log.d("PRODUCTOS: CASO VOLUMEN", "EXCEPCION AL BORRAR");
 

@@ -30,6 +30,9 @@ public class ShoppingListPad extends AppCompatActivity {
     private static final int ORDER_NAME_ID = Menu.FIRST + 6;
     private static final int ORDER_PRICE_ID = Menu.FIRST + 7;
     private static final int ORDER_WEIGHT_ID = Menu.FIRST + 8;
+    private static final int PRUEBA_ID = Menu.FIRST + 9;
+    private static final int BORRAR_PRUEBA_ID = Menu.FIRST + 10;
+
 
 
     private DbAdapter mDbHelper;
@@ -94,6 +97,8 @@ public class ShoppingListPad extends AppCompatActivity {
         menu.add(Menu.NONE, ORDER_NAME_ID, Menu.NONE, R.string.order_name);
         menu.add(Menu.NONE, ORDER_PRICE_ID, Menu.NONE, R.string.order_price);
         menu.add(Menu.NONE, ORDER_WEIGHT_ID, Menu.NONE, R.string.order_weight);
+        menu.add(Menu.NONE, PRUEBA_ID, Menu.NONE, "Test");
+        menu.add(Menu.NONE, BORRAR_PRUEBA_ID, Menu.NONE, "Delete Test");
         return result;
     }
 
@@ -119,7 +124,14 @@ public class ShoppingListPad extends AppCompatActivity {
             case ORDER_WEIGHT_ID:
                 fillDataOrdered(DbAdapter.LIST_KEY_PESO);
                 return true;
-
+            case PRUEBA_ID:
+                Test.casiPetardoListasTest(mDbHelper);
+                fillData();
+                return true;
+            case BORRAR_PRUEBA_ID:
+                Test.borrarCasiPetardoListasTest(mDbHelper);
+                fillData();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -132,6 +144,7 @@ public class ShoppingListPad extends AppCompatActivity {
         menu.add(Menu.NONE, EDIT_ID, Menu.NONE, R.string.edit_list);
         menu.add(Menu.NONE, SHOW_ID, Menu.NONE, R.string.show_list);
         menu.add(Menu.NONE, SEND_ID, Menu.NONE, R.string.send_list);
+
     }
 
     @Override
@@ -154,6 +167,7 @@ public class ShoppingListPad extends AppCompatActivity {
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 sendList(info.position, info.id);
                 return true;
+
         }
         return super.onContextItemSelected(item);
     }

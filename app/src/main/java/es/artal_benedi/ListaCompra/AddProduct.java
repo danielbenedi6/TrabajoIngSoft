@@ -67,7 +67,7 @@ public class AddProduct extends AppCompatActivity {
             }
         }
         //System.out.println("RowID (add_product): " + Long.toString(mRowId));
-        //System.out.println("RowID (add_product): " + Long.toString(mContainsId));
+        //System.out.println("ContainID (add_product): " + Long.toString(mContainsId));
         fillData();
         populateFields();
 
@@ -99,7 +99,18 @@ public class AddProduct extends AppCompatActivity {
         mSpinner.setAdapter(notes);
 
         if(mContainsId != null) {
-            mSpinner.setSelection(mDbHelper.fetchProductIdInList(mContainsId).intValue() - 1);
+            System.out.println("filldata(): " + mContainsId);
+            System.out.println("filldata(): " + notes.getCount());
+            notesCursor.moveToFirst();
+            boolean encontrado = false;
+            for(int i = 0; i<notesCursor.getCount() && !encontrado; i++){
+                if(mDbHelper.fetchProductIdInList(mContainsId).intValue() == notesCursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_ROWID)){
+                    mSpinner.setSelection(i);
+                    encontrado = true;
+                }
+                notesCursor.moveToNext();
+            }
+
         }
     }
 

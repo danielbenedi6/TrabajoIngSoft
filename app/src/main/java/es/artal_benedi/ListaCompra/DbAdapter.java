@@ -108,12 +108,12 @@ public class DbAdapter {
 
     private  static final String TRIGGER_DELETE_CONTIENE =
             "CREATE TRIGGER IF NOT EXISTS actualizarPesoPrecioDelete " +
-            "AFTER  DELETE ON contiene " +
+            "BEFORE DELETE ON contiene " +
             "FOR EACH ROW " +
             "BEGIN " +
             " UPDATE LISTAS " +
-            " SET precio = (SELECT sum(p.precio*cantidad) FROM contiene, productos p WHERE lista == OLD.lista AND producto == p._id), " +
-            "  peso = (SELECT sum(p.peso*cantidad) FROM contiene, productos p WHERE lista == OLD.lista AND producto == p._id) " +
+            " SET precio = precio - (OLD.cantidad*(SELECT precio FROM productos p WHERE p._id == OLD.producto)), " +
+            "  peso = peso - (OLD.cantidad*(SELECT peso FROM productos p WHERE p._id == OLD.producto)) " +
             " WHERE _id == OLD.lista;" +
             "END";
 
