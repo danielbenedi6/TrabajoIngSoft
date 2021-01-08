@@ -439,4 +439,145 @@ public class Test {
         }
 
     }
+
+    public static void crearTestSobrecargaLongitudNombre(DbAdapter nda){
+        long id, count = 0;
+        String append = "aaaaaaaaaa";
+        System.out.println("Longitud del texto = 2^n*10+19");
+        do{
+            id = nda.createShoppingList("PRUEBA SOBRECARGA: " + append);
+            append += append;
+            count++;
+            System.out.println("n = "+ count);
+        }while(id > 0);
+        System.out.println("Resultado final: n = "+ count);
+    }
+    public static void borrarTestSobrecargaLongitudNombre(DbAdapter nda){
+        Cursor cursor = nda.fetchAllShoppingLists();
+        try {
+            int i =0;
+            while(cursor.moveToNext()) {
+                if (cursor.getString(cursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_NAME)).contains("PRUEBA_SOBRECARGA: ")) {
+                    nda.deleteShoppingList(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_ROWID)));
+                    i++;
+                }
+            }
+            System.out.println("borrarTestSobrecargaLongitudNombre: "+i);
+        }catch( Exception e){
+
+        }finally{
+            cursor.close();
+        }
+
+    }
+
+    public static void crearTestSobrecargaNumeroListas(DbAdapter nda){
+        long id, count = 0;
+        System.out.println("Número de listas");
+        try {
+            do {
+                id = nda.createShoppingList("PRUEBA SOBRECARGA: ");
+                count++;
+                System.out.println("n = " + count);
+            } while (id > 0);
+            System.out.println("Resultado final: n = " + count);
+        }catch(Exception e) {
+            System.out.println("Resultado final: n = " + count);
+        }
+    }
+    public static void borrarTestSobrecargaNumeroListas(DbAdapter nda){
+        Cursor cursor = nda.fetchAllShoppingLists();
+        try {
+            int i =0;
+            while(cursor.moveToNext()) {
+                if (cursor.getString(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_NAME)).contains("PRUEBA_SOBRECARGA: ")) {
+                    nda.deleteShoppingList(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_ROWID)));
+                    i++;
+                }
+            }
+            System.out.println("borrarTestSobrecargaLongitudNombre: "+i);
+        }catch( Exception e){
+
+        }finally{
+            cursor.close();
+        }
+
+    }
+
+    public static void crearTestSobrecargaNumeroProductos(DbAdapter nda){
+        long id, count = 0;
+        System.out.println("Número de productos");
+        try {
+            do {
+                id = nda.createProduct("PRODUCTO SOBRECARGA", 1, 1);
+                count++;
+                System.out.println("n = " + count);
+            } while (id > 0);
+            System.out.println("Resultado final: n = " + count);
+        }catch(Exception e) {
+            System.out.println("Resultado final: n = " + count);
+        }
+    }
+
+    public static void borrarTestSobrecargaNumeroProductos(DbAdapter nda) {
+        Cursor cursor = nda.fetchAllProducts();
+        try {
+            int i = 0;
+            while (cursor.moveToNext()) {
+                if (cursor.getString(cursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_NAME)).equals("PRODUCTO SOBRECARGA")) {
+                    nda.deleteShoppingList(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_ROWID)));
+                    i++;
+                }
+            }
+            System.out.println("borrarTestSobrecargaLongitudNombre: " + i);
+        } catch (Exception e) {
+
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public static void TestSobrecargaAsociarProductosListas(DbAdapter nda){
+        Cursor productos = nda.fetchAllProducts();
+        Cursor listas = nda.fetchAllShoppingLists();
+        while(listas.moveToNext()){
+            long idLista = listas.getLong(listas.getColumnIndexOrThrow(DbAdapter.LIST_KEY_ROWID));
+            productos.moveToFirst();
+            do{
+                long idProducto = productos.getLong(productos.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_ROWID));
+                nda.addProductToList(idLista, idProducto, 1);
+            }while(productos.moveToNext());
+            System.out.println("Todos los productos añadidos en lista: " + idLista);
+        }
+    }
+
+    public static void TestSobrecargaPeso(DbAdapter nda){
+        long peso = 1, id;
+        do{
+            System.out.println("Next peso = " + peso);
+            id = nda.createProduct("SOBRECARGA PESO", 1, peso);
+            peso *= 2;
+        }while(id > 0);
+    }
+
+    public static void TestSobrecargaPrecio(DbAdapter nda){
+        long precio = 1, id;
+        do{
+            System.out.println("Next precio = " + precio);
+            id = nda.createProduct("SOBRECARGA precio", precio, 1);
+            precio *= 2;
+        }while(id > 0);
+    }
+
+    public static void TestSobrecargaCantidad(DbAdapter nda){
+        int cantidad = 1;
+        long id;
+        long idLista = nda.createShoppingList("SOBRECARGA CANTIDAD");
+        long idProducto = nda.createProduct("SOBRECARGA CANTIDAD", 0, 0);
+        do{
+            System.out.println("Next cantidad = " + cantidad);
+            id = nda.addProductToList(idLista, idProducto, cantidad);
+            cantidad *= 2;
+        }while(id > 0);
+    }
 }
