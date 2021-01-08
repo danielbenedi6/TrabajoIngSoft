@@ -580,4 +580,19 @@ public class Test {
             cantidad *= 2;
         }while(id > 0);
     }
+
+    /*
+Test de Sobrecarga:
+ - Longitud del nombre. Empieza a fallar con 2^17*10+19 caracteres, saca excepción en 2^23*10+19 (poco más de 2^26). Según documentación oficial el límite de la BD está en 10^9 (casi 2^30) aunque se puede aumentar hasta 2^31 - 1. El tamaño máximo de JAVA de un string es 2^31-1
+ - Peso máximo de un producto/lista: Cuando llega a 2^62 pasa a números negativos pero realmente es 2^63, la siguiente iteración se queda en 0. Sucede un overflow
+ - Precio máximo de un producto/lista: Sucede lo mismo que en el caso anterior
+ - Cantidad de un producto: La Sum(2^n,0,30) va bien. Al intentar sumar 2^31 lo toma como negativo y se para.
+ - Número de Listas de la compra vacías: A eso de los 1500 sale mensaje de no responde, pero sigue creando. A las 100.623 me he cansado y lo he parado. Seguía creando al mismo ritmo así que supongo que no fallaría pronto. El sistema las visualiza bien. Según documentación el límite teórico está en 2^64, pero el tamaño de la BD está en 281 TB así que dificilmente puede pasar de los 2*10^13.
+ - Número de Productos: Igual que antes a los 1500 mensaje de no respone, pero sigue creando. Al igual que antes, a los 100.110 me cansé y lo dejé.
+ - La asociación de los 100.110 productos a las 100.623 listas para estar funcionando, pero le cuesta. He probado asociar todos a una lista de la compra.
+
+Fuentes:
+https://www.sqlite.org/limits.html
+https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#length()
+     */
 }
