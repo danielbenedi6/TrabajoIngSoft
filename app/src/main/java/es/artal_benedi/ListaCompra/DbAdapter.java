@@ -246,8 +246,7 @@ public class DbAdapter {
      */
     public Cursor fetchAllProducts() {
 
-        return mDb.query(DATABASE_TABLE_PRODUCTS, new String[] {PRODUCT_KEY_ROWID, PRODUCT_KEY_NAME,
-                PRODUCT_KEY_PRECIO, PRODUCT_KEY_PESO}, null, null, null, null, "_id");
+        return fetchAllProductsOrdered(null);
     }
 
     public Cursor fetchAllProductsOrdered(String orderBy) {
@@ -262,8 +261,7 @@ public class DbAdapter {
 
     public Cursor fetchAllShoppingLists() {
 
-        return mDb.query(DATABASE_TABLE_LISTS, new String[] {LIST_KEY_ROWID, LIST_KEY_NAME},
-                null, null, null, null, null, null);
+        return fetchAllShoppingListsOrdered(null);
     }
 
     public Cursor fetchAllProductsShoppingList(long rowId) throws SQLException{
