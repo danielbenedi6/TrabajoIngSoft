@@ -264,7 +264,7 @@ public class DbAdapter {
         return fetchAllShoppingListsOrdered(null);
     }
 
-    public Cursor fetchAllProductsShoppingList(long rowId) throws SQLException{
+    public Cursor fetchProductsShoppingList(long rowId) throws SQLException{
 
         return mDb.query(true, DATABASE_TABLE_CONTAINS + " c , " + DATABASE_TABLE_PRODUCTS + " p",
                         new String[] {"c." + CONTAINS_KEY_ROWID + " _id ", PRODUCT_KEY_NAME, CONTAINS_KEY_CANTIDAD},
@@ -295,7 +295,7 @@ public class DbAdapter {
 
     }
 
-    public Cursor fetchList(long rowId) throws SQLException {
+    public Cursor fetchShoppingList(long rowId) throws SQLException {
 
         Cursor mCursor =
 

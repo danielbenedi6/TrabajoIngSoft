@@ -69,7 +69,7 @@ public class ListEdit extends AppCompatActivity {
     private void populateFields(){
         if(mRowId != null){
             System.out.println("RowID (onCreate list_edit): " + Long.toString(mRowId));
-            Cursor note = mDbHelper.fetchList(mRowId);
+            Cursor note = mDbHelper.fetchShoppingList(mRowId);
             startManagingCursor(note);
             mNameText.setText(note.getString(note.getColumnIndexOrThrow(DbAdapter.LIST_KEY_NAME)));
             fillData();
@@ -78,7 +78,7 @@ public class ListEdit extends AppCompatActivity {
 
     private void fillData(){
         // Get all of the notes from the database and create the item list
-        Cursor notesCursor = mDbHelper.fetchAllProductsShoppingList(mRowId);
+        Cursor notesCursor = mDbHelper.fetchProductsShoppingList(mRowId);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
         String[] from = new String[] { DbAdapter.PRODUCT_KEY_NAME, DbAdapter.CONTAINS_KEY_CANTIDAD};

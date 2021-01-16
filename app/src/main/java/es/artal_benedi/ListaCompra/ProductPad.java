@@ -47,20 +47,7 @@ public class ProductPad extends AppCompatActivity {
     }
 
     private void fillData() {
-        // Get all of the notes from the database and create the item list
-        Cursor notesCursor = mDbHelper.fetchAllProducts();
-
-        // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[] { DbAdapter.PRODUCT_KEY_NAME,
-                DbAdapter.PRODUCT_KEY_PESO,   DbAdapter.PRODUCT_KEY_PRECIO};
-
-        // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.productName, R.id.productWeight, R.id.productPrice };
-
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter notes =
-                new SimpleCursorAdapter(this, R.layout.product_row, notesCursor, from, to);
-        mList.setAdapter(notes);
+        fillDataOrdered(null);
     }
 
     private void fillDataOrdered(String orderBy) {
@@ -100,16 +87,12 @@ public class ProductPad extends AppCompatActivity {
                 createProduct();
                 return true;
             case ORDER_NAME_ID:
-                //TODO realmente podemos quitar fillData, ya que
-                // fillData() = fillDataOrdered(null)
                 fillDataOrdered(DbAdapter.PRODUCT_KEY_NAME);
                 return true;
             case ORDER_PRICE_ID:
-                //TODO hacerlo bien
                 fillDataOrdered(DbAdapter.PRODUCT_KEY_PRECIO);
                 return true;
             case ORDER_WEIGHT_ID:
-                //TODO hacerlo bien
                 fillDataOrdered(DbAdapter.PRODUCT_KEY_PESO);
                 return true;
             case PRUEBA_ID:

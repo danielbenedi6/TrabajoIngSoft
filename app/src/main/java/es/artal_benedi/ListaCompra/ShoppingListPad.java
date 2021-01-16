@@ -66,19 +66,7 @@ public class ShoppingListPad extends AppCompatActivity {
     }
 
     private void fillData() {
-        // Get all of the notes from the database and create the item list
-        Cursor notesCursor = mDbHelper.fetchAllShoppingLists();
-
-        // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[] { DbAdapter.LIST_KEY_NAME };
-
-        // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.ItemList };
-
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter notes =
-                new SimpleCursorAdapter(this, R.layout.shoppinglistpad_row, notesCursor, from, to);
-        mList.setAdapter(notes);
+        fillDataOrdered(null);
     }
 
     private void fillDataOrdered(String orderBy) {
@@ -130,8 +118,6 @@ public class ShoppingListPad extends AppCompatActivity {
                 showProducts();
                 return true;
             case ORDER_NAME_ID:
-                //TODO realmente podemos quitar fillData, ya que
-                // fillData() = fillDataOrdered(null)
                 fillDataOrdered(DbAdapter.LIST_KEY_NAME);
                 return true;
             case ORDER_PRICE_ID:
@@ -246,11 +232,11 @@ public class ShoppingListPad extends AppCompatActivity {
     private void sendList(int position, long id){
         SendAbstraction sa = new SendAbstractionImpl(this, "EMAIL");
         String subject = "", body = "";
-        Cursor cursor = mDbHelper.fetchList(id);
+        Cursor cursor = mDbHelper.fetchShoppingList(id);
         if(cursor.moveToFirst()) {
             subject = cursor.getString(cursor.getColumnIndex(DbAdapter.LIST_KEY_NAME));
         }
-        cursor = mDbHelper.fetchAllProductsShoppingList(id);
+        cursor = mDbHelper.fetchProductsShoppingList(id);
         try {
             while (cursor.moveToNext()) {
                 body += cursor.getString(cursor.getColumnIndex(DbAdapter.CONTAINS_KEY_CANTIDAD))+" x "+

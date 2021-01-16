@@ -1,16 +1,8 @@
 package es.artal_benedi.ListaCompra;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -49,7 +41,7 @@ public class ShoppingListShow extends AppCompatActivity {
 
     private void populateFields(){
         if(mRowId != null){
-            Cursor note = mDbHelper.fetchList(mRowId);
+            Cursor note = mDbHelper.fetchShoppingList(mRowId);
             startManagingCursor(note);
             mNameText.setText(note.getString(note.getColumnIndexOrThrow(DbAdapter.LIST_KEY_NAME)));
             mPriceText.setText(Double.toString(note.getDouble(note.getColumnIndexOrThrow(DbAdapter.LIST_KEY_PRECIO))));
@@ -60,7 +52,7 @@ public class ShoppingListShow extends AppCompatActivity {
 
     private void fillData() {
         // Get all of the notes from the database and create the item list
-        Cursor notesCursor = mDbHelper.fetchAllProductsShoppingList(mRowId);
+        Cursor notesCursor = mDbHelper.fetchProductsShoppingList(mRowId);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
         String[] from = new String[]{DbAdapter.PRODUCT_KEY_NAME, DbAdapter.CONTAINS_KEY_CANTIDAD};
