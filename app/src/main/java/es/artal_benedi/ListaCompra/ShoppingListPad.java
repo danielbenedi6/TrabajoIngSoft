@@ -15,7 +15,9 @@ import android.widget.SimpleCursorAdapter;
 import es.artal_benedi.send.SendAbstraction;
 import es.artal_benedi.send.SendAbstractionImpl;
 
-
+/**
+ * Clase que gestiona la actividad principal y en la que se muestran los productos en una lista.
+ */
 public class ShoppingListPad extends AppCompatActivity {
 
     private static final int ACTIVITY_CREATE=0;
@@ -47,7 +49,12 @@ public class ShoppingListPad extends AppCompatActivity {
     private ListView mList;
 
 
-    /** Called when the activity is first created. */
+    /**
+     * Llamado cuando la actividad es creada. Se encarga de preparar
+     * el diseño de la actividad y de la conexión con la base de datos.
+     *
+     * @param savedInstanceState estado de la instacia guardada
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -65,10 +72,22 @@ public class ShoppingListPad extends AppCompatActivity {
 
     }
 
+    /**
+     * Busca todas las listas de compra de la base de datos y las muestra por pantalla
+     * haciendo uso del ListView de la actividad. Con esto, tambiénse permite interactuar
+     * con cada lista de compra existente.
+     */
     private void fillData() {
         fillDataOrdered(null);
     }
 
+    /**
+     * Busca todas las listas de compra de la base de datos y las muestra por pantalla
+     * ordenadas según el parámetro orderBy haciendo uso del ListView de la actividad.
+     * Con esto, tambiénse permite interactuar con cada lista de compra existente.
+     *
+     * @param orderBy atributo según el cual ordenar el listado
+     */
     private void fillDataOrdered(String orderBy) {
         // Get all of the notes from the database and create the item list
         Cursor notesCursor = mDbHelper.fetchAllShoppingListsOrdered(orderBy);
@@ -85,6 +104,13 @@ public class ShoppingListPad extends AppCompatActivity {
         mList.setAdapter(notes);
     }
 
+    /**
+     * Crea un menú de opciones de la actividad a partir de uno que se le pasa como parámetro
+     * y al que le añade opciones.
+     *
+     * @param menu menú a partir del cual crear el menú de opciones
+     * @return verdad si es creado el menú, falso en caso contrario
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
@@ -106,6 +132,12 @@ public class ShoppingListPad extends AppCompatActivity {
         return result;
     }
 
+    /**
+     * Gestiona las acciones a realizar en función de la opción del menú escogida.
+     *
+     * @param item opción del menú escogida
+     * @return verdad si es realizada la operación, falso en caso contrario
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -170,6 +202,15 @@ public class ShoppingListPad extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Crea un menú de de contexto para cada una de los listas de compra mostradas
+     * y a dicho menú le añade opciones, que son operaciones a realizar con el producto
+     * seleccionado.
+     *
+     * @param menu menú de contexto
+     * @param v vista
+     * @param menuInfo información del menú de contexto
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -181,6 +222,13 @@ public class ShoppingListPad extends AppCompatActivity {
 
     }
 
+    /**
+     * Gestiona las acciones a realizar en funciñon de la opción del menú
+     * de contexto escogida.
+     *
+     * @param item opción del menú escogida
+     * @return verdad si es realizada la operación, falso en caso contrario
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {

@@ -12,6 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+/**
+ * Clase que gestiona la actividad en la que se muestran los productos de la base de datos.
+ */
 public class ProductPad extends AppCompatActivity {
 
     private static final int ACTIVITY_CREATE=0;
@@ -30,7 +33,12 @@ public class ProductPad extends AppCompatActivity {
     private ListView mList;
 
 
-    /** Called when the activity is first created. */
+    /**
+     * Llamado cuando la actividad es creada. Se encarga de preparar
+     * el diseño de la actividad y de la conexión con la base de datos.
+     *
+     * @param savedInstanceState estado de la instacia guardada
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -46,10 +54,22 @@ public class ProductPad extends AppCompatActivity {
 
     }
 
+    /**
+     * Busca todos los productos de la base de datos y los muestra por pantalla
+     * haciendo uso del ListView de la actividad. Con esto, tambiénse permite interactuar
+     * con cada producto existente.
+     */
     private void fillData() {
         fillDataOrdered(null);
     }
 
+    /**
+     * Busca todaos los productos de la dase de datos y los muestra por pantalla ordenadas según
+     *  el parámetro orderBy haciendo uso del ListView de la actividad. Con esto, también se
+     *  permite interactuar con cada producto existente.
+     *
+     * @param orderBy atributo según el cual ordenar el listado
+     */
     private void fillDataOrdered(String orderBy) {
         // Get all of the notes from the database and create the item list
         Cursor notesCursor = mDbHelper.fetchAllProductsOrdered(orderBy);
@@ -67,7 +87,13 @@ public class ProductPad extends AppCompatActivity {
         mList.setAdapter(notes);
     }
 
-
+    /**
+     * Crea un menú de opciones de la actividad a partir de uno que se le pasa como parámetro
+     * y al que le añade opciones.
+     *
+     * @param menu menú a partir del cual crear el menú de opciones
+     * @return verdad si es creado el menú, falso en caso contrario
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
@@ -80,6 +106,12 @@ public class ProductPad extends AppCompatActivity {
         return result;
     }
 
+    /**
+     * Gestiona las acciones a realizar en función de la opción del menú escogida.
+     *
+     * @param item opción del menú escogida
+     * @return verdad si es realizada la operación, falso en caso contrario
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -107,6 +139,14 @@ public class ProductPad extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Crea un menú de de contexto para cada uno de los productos mostrados y a dicho
+     * menú le añade opciones, que son operaciones a realizar con el producto seleccionado.
+     *
+     * @param menu menú de contexto
+     * @param v vista
+     * @param menuInfo información del menú de contexto
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -115,6 +155,13 @@ public class ProductPad extends AppCompatActivity {
         menu.add(Menu.NONE, EDIT_ID, Menu.NONE, R.string.menu_edit);
     }
 
+    /**
+     * Gestiona las acciones a realizar en funciñon de la opción del menú
+     * de contexto escogida.
+     *
+     * @param item opción del menú escogida
+     * @return verdad si es realizada la operación, falso en caso contrario
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -131,19 +178,37 @@ public class ProductPad extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
+    /**
+     * Lanza un intent para cambiar a la actividad de creación de notas con el fin de crear
+     * una nota.
+     */
     private void createProduct() {
         Intent i = new Intent(this, ProductEdit.class);
         startActivityForResult(i, ACTIVITY_CREATE);
     }
 
-
+    /**
+     * Crea un Intent para cambiar a la actividad de edición de proxductos con el fin de
+     * modificar el producto seleccionado.
+     *
+     * @param position posición de la nota en el ListView
+     * @param id id de la nota
+     */
     protected void editProduct(int position, long id) {
         Intent i = new Intent(this, ProductEdit.class);
         i.putExtra(DbAdapter.PRODUCT_KEY_ROWID, id);
         startActivityForResult(i, ACTIVITY_EDIT);
     }
 
-
+    /**
+     * Método que se ejecuta cuando se vuelve a la actividad en la que está
+     * tras acabar la actividad lanzada. Se encarga de mostrar nuevamente los
+     * productos de la base de datos.
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);

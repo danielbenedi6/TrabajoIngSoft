@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
+/**
+ * Clase que gestiona la actividad para la adición y modificación de productos
+ * en una lista de compra.
+ */
 public class AddProduct extends AppCompatActivity {
 
     private EditText mAmountText;
@@ -22,6 +26,9 @@ public class AddProduct extends AppCompatActivity {
 
     private static final String CONTAINS_SERIALIZABLE = "CONTAINS_ID";
 
+    /**
+     * Clase que gestiona la actividad del spinner.
+     */
     private class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int pos, long id) {
@@ -34,6 +41,14 @@ public class AddProduct extends AppCompatActivity {
         }
     }
 
+    /**
+     * Llamado cuando la actividad es creada. Se encarga de preparar
+     * el diseño y los elementos de la actividad, de la conexión con
+     * la base de datos y de gestionar los estados guardados y el
+     * funcionamiento del botón de la actividad.
+     *
+     * @param savedInstanceState estado de la instacia guardada
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +98,10 @@ public class AddProduct extends AppCompatActivity {
         });
     }
 
+    /**
+     * Busca todos los productos  de la base de datos y los muestra por pantalla haciendo
+     * uso del Spinner de la actividad. Así se permite elegir el prducto a añadir a la lista.
+     */
     private void fillData() {
         // Get all of the notes from the database and create the item list
         Cursor notesCursor = mDbHelper.fetchAllProducts();
@@ -114,6 +133,11 @@ public class AddProduct extends AppCompatActivity {
         }
     }
 
+    /**
+     * Busca los datos asociados a la lista de compra seleccionada (si existe) y que se
+     * quiere modificar y los muestra en los widget correspondientes.
+     *
+     */
     private void populateFields(){
         if(mContainsId != null){
             Cursor note = mDbHelper.fetchAmount(mContainsId);
@@ -122,6 +146,11 @@ public class AddProduct extends AppCompatActivity {
         }
     }
 
+    /**
+     * Guarda el estado de la actividad, que es el rowId del producto.
+     *
+     * @param outState estado de salida
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -130,22 +159,34 @@ public class AddProduct extends AppCompatActivity {
         outState.putSerializable(CONTAINS_SERIALIZABLE, mContainsId);
     }
 
+    /**
+     * Llamado al pausar la actividad, momento en el que se guarda el
+     * estado de la actividad.
+     */
     @Override
     protected void onPause(){
         super.onPause();
         saveState();
     }
 
+    /**
+     * Llamado al reaundar e iniciar la actividad.
+     */
     @Override
     protected void onResume(){
         super.onResume();
         //saveState();
     }
 
+    /**
+     * Si existe el producto en producto en la lista, guarda los cambios realizados en
+     * la base de datos. En caso de no existir, lo añade con los datos introducidos.
+     */
     private void saveState(){
         System.out.format("AL MENOS LLEGA %s\n", mContainsId);
         String name = mAmountText.getText().toString();
-        int amount = 0;
+        //TODO amount 0 ahora no se guarda, asi que lo cambio por 1. Si tienes una propuesta mejor hazla
+        int amount = 1;
         if (!mAmountText.getText().toString().isEmpty())
             amount = Integer.parseInt(mAmountText.getText().toString());
 

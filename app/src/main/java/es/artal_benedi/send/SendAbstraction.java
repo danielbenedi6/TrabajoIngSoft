@@ -3,7 +3,8 @@ package es.artal_benedi.send;
 /** Define la interfaz de la abstraccion */
 public interface SendAbstraction {
 
-	/** Definici�n del metodo que permite enviar la nota con el asunto (subject) y cuerpo (body) que se reciben como parametros
+	/** Definici�n del metodo que permite enviar la lista de compra con el asunto
+	 * (subject) y cuerpo (body) que se reciben como parametros
      * @param subject asunto
      * @param body cuerpo del mensaje
      */

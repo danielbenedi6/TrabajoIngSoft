@@ -9,13 +9,13 @@ import android.app.Activity;
  */
 public interface SendImplementor {
 	   
-   /**  Actualiza la actividad desde la cual se abrira la actividad de envi�o de notas */
+   /**  Actualiza la actividad desde la cual se abrira la actividad de envi�o de listas de compra */
    public void setSourceActivity(Activity source);
 
-   /**  Recupera la actividad desde la cual se abrira la actividad de envio de notas */
+   /**  Recupera la actividad desde la cual se abrira la actividad de envio de listas de compra */
    public Activity getSourceActivity();
 
-   /** Permite lanzar la actividad encargada de gestionar el envio de notas */
+   /** Permite lanzar la actividad encargada de gestionar el envio de listas de compra */
    public void send(String subject, String body);
 
 }

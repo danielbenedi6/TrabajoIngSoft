@@ -9,14 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Simple notes database access helper class. Defines the basic CRUD operations
- * for the notepad example, and gives the ability to list all notes as well as
- * retrieve or modify a specific note.
- *
- * This has been improved from the first version of this tutorial through the
- * addition of better error handling and also using returning a Cursor instead
- * of using a collection of inner classes (which is less scalable and not
- * recommended).
+ * Clase de ayuda al acceso a la base de datos de las listas de compra y los productos.
+ * Define unas operaciones básicas para la aplicación y proporciona la habilidad de
+ * trabajar con listas de compra o productos específicos.
  */
 public class DbAdapter {
 
@@ -178,23 +173,20 @@ public class DbAdapter {
     }
 
     /**
-     * Constructor - takes the context to allow the database to be
-     * opened/created
+     * Constructor - coge el contexto para permitir a la base de datos ser creada/abierta
      *
-     * @param ctx the Context within which to work
+     * @param ctx el contexto con el que trabajar
      */
     public DbAdapter(Context ctx) {
         this.mCtx = ctx;
     }
 
     /**
-     * Open the notes database. If it cannot be opened, try to create a new
-     * instance of the database. If it cannot be created, throw an exception to
-     * signal the failure
+     * Abre la base de datos. Si no puede ser abierta, intenta crear una nueva instacia
+     * de ella. Si no puede ser creada, lanza una excepción para indicar error.
      *
-     * @return this (self reference, allowing this to be chained in an
-     *         initialization call)
-     * @throws SQLException if the database could be neither opened or created
+     * @return this (referencia propia)
+     * @throws SQLException si la base de datos no puede ser abierta ni creada
      */
     public DbAdapter open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
@@ -202,20 +194,27 @@ public class DbAdapter {
         return this;
     }
 
+    /**
+     * Cierra la base de datos.
+     */
     public void close() {
         mDbHelper.close();
     }
 
 
     /**
-     * Create a new note using the title and body provided. If the note is
-     * successfully created return the new rowId for that note, otherwise return
-     * a -1 to indicate failure.
+     * Crea un nuevo producto usando el nombre, precio y peso provistos. El nombre no puede ser
+     * la cadena vacía, el precio no puede ser negativo y el peso tiene que ser mayor que 0.
+     * Si el producto es creado exitosamente, devuelve el rowId de ese producto. En caso contrario
+     * devuelve -1 para indicar error.
      *
-     * @return rowId or -1 if failed
+     * @param nombre nombre del producto
+     * @param precio precio del producto
+     * @param peso peso del producto
+     * @return rowId o -1 si falla
      */
     public long createProduct(String nombre, double precio, double peso) {
-        if(nombre != null && !nombre.isEmpty() && precio > 0 && peso > 0) {
+        if(nombre != null && !nombre.isEmpty() && precio >= 0 && peso > 0) {
             ContentValues initialValues = new ContentValues();
             initialValues.put(PRODUCT_KEY_NAME, nombre);
             initialValues.put(PRODUCT_KEY_PRECIO, precio);
@@ -229,10 +228,10 @@ public class DbAdapter {
     }
 
     /**
-     * Delete the note with the given rowId
+     * Borra el producto de la base de datos que tiene el rowId que se da como parámetro.
      *
-     * @param rowId id of note to delete
-     * @return true if deleted, false otherwise
+     * @param rowId id del producto a borrar
+     * @return verdad si es borrado, falso en caso contrario
      */
     public boolean deleteProduct(long rowId) {
 
@@ -240,30 +239,53 @@ public class DbAdapter {
     }
 
     /**
-     * Return a Cursor over the list of all notes in the database
+     * Devuelve un Cursor sobre la lista de todos los productos de la base de datos.
      *
-     * @return Cursor over all notes
+     * @return Cursor sobre los productos
      */
     public Cursor fetchAllProducts() {
 
         return fetchAllProductsOrdered(null);
     }
 
+    /**
+     * Devuelve un Cursor sobre la lista de todos los productos de la base de datos ordenados
+     * según uno de sus atributos de manera ascendiente.
+     *
+     * @return Cursor sobre los productos
+     */
     public Cursor fetchAllProductsOrdered(String orderBy) {
         return mDb.query(DATABASE_TABLE_PRODUCTS, new String[] {PRODUCT_KEY_ROWID, PRODUCT_KEY_NAME,
                 PRODUCT_KEY_PRECIO, PRODUCT_KEY_PESO}, null, null, null, null, orderBy);
     }
 
+    /**
+     * Devuelve un Cursor sobre la lista de todas las listas de compra de la base de datos
+     * ordenadas según uno de sus atributos de manera ascendiente.
+     *
+     * @return Cursor sobre las listad de compra
+     */
     public Cursor fetchAllShoppingListsOrdered(String orderBy) {
         return mDb.query(DATABASE_TABLE_LISTS, new String[] {LIST_KEY_ROWID, LIST_KEY_NAME},
                 null, null, null, null, orderBy, null);
     }
 
+    /**
+     * Devuelve un Cursor sobre la lista de todas las listas de compra de la base de datos.
+     *
+     * @return Cursor sobre las listas de compra
+     */
     public Cursor fetchAllShoppingLists() {
 
         return fetchAllShoppingListsOrdered(null);
     }
 
+    /**
+     * Devuelve un Cursor sobre la lista de los productos pertenecientes a una listas de
+     * compra de la base de datos.
+     *
+     * @return Cursor sobre los productos de una lista
+     */
     public Cursor fetchProductsShoppingList(long rowId) throws SQLException{
 
         return mDb.query(true, DATABASE_TABLE_CONTAINS + " c , " + DATABASE_TABLE_PRODUCTS + " p",
@@ -275,11 +297,11 @@ public class DbAdapter {
 
 
     /**
-     * Return a Cursor positioned at the note that matches the given rowId
+     * Devuelve un Cursor posicionado en el producto cuyo rowId es el mismo que el proporcionado.
      *
-     * @param rowId id of note to retrieve
-     * @return Cursor positioned to matching note, if found
-     * @throws SQLException if note could not be found/retrieved
+     * @param rowId id de la nota a sacar
+     * @return Cursor posicionado en el producto deseado, si es encontrado
+     * @throws SQLException si ocurre algún fallo
      */
     public Cursor fetchProduct(long rowId) throws SQLException {
 
@@ -295,6 +317,14 @@ public class DbAdapter {
 
     }
 
+    /**
+     * Devuelve un Cursor posicionado en la lista de compra cuyo rowId es el mismo que
+     * el proporcionado.
+     *
+     * @param rowId id de la lista de compra a sacar
+     * @return Cursor posicionado en la lista de compra deseado, si es encontrada
+     * @throws SQLException si ocurre algún fallo
+     */
     public Cursor fetchShoppingList(long rowId) throws SQLException {
 
         Cursor mCursor =
@@ -309,6 +339,15 @@ public class DbAdapter {
 
     }
 
+    /**
+     * Devuelve un Cursor posicionado en el producto de una lista de compra cuyo rowId
+     * de su relación con dicha lista es el mismo que el proporcionado. Tiene como fin
+     * obetener la cantidad de ese producto en la lista.
+     *
+     * @param rowId id de la relación entre el producto y la lista
+     * @return Cursor posicionado en el producto deseado, si es encontrado
+     * @throws SQLException si ocurre algún fallo
+     */
     public Cursor fetchAmount(long rowId) throws SQLException {
 
         Cursor mCursor =
@@ -323,6 +362,15 @@ public class DbAdapter {
 
     }
 
+    /**
+     * Devuelve un Cursor posicionado en el producto de una lista de compra cuyo rowId
+     * de su relación con dicha lista es el mismo que el proporcionado. Tiene como fin
+     * obetener el id de ese producto.
+     *
+     * @param rowId id de la relación entre el producto y la lista
+     * @return Cursor posicionado en el producto deseado, si es encontrado
+     * @throws SQLException si ocurre algún fallo
+     */
     public Long fetchProductIdInList(long rowId) throws SQLException {
 
         Cursor mCursor =
@@ -341,12 +389,16 @@ public class DbAdapter {
 
 
     /**
-     * Update the note using the details provided. The note to be updated is
-     * specified using the rowId, and it is altered to use the title and body
-     * values passed in
+     * Actualiza el producto con los nuevos datos proporcionados. El producto a actualizar es
+     * aquel cuyo rowId coincide con el proporcionado y se modifica el nombre, precio y peso
+     * por los pasados como parámetros. El nombre no puede ser cadena vacía, el precio no
+     * puede ser negativo y el peso tiene que ser mayor que 0.
      *
-     * @param rowId id of note to update
-     * @return true if the note was successfully updated, false otherwise
+     * @param rowId id del producto a actualizar
+     * @param nombre nuevo nombre del producto
+     * @param precio nuevo precio del producto
+     * @param peso nuevo peso del producto
+     * @return verdad si el producto fue actualizada con éxito, falso en caso contrario
      */
     public boolean updateProduct(long rowId, String nombre, double precio, double peso) {
         if(nombre != null && !nombre.isEmpty() && precio > 0 && peso > 0) {
@@ -360,6 +412,18 @@ public class DbAdapter {
         }
     }
 
+    /**
+     * Actualiza la cantidad de un producto en una lista de compra y también el tipo de producto
+     * con los nuevos datos proporcionados. El producto de una lista a actualizar es aquel cuyo
+     * rowId de la relación entre listas de compra y productos coincide con el proporcionado y
+     * se modifica el producto y la cantidad de la relación por los pasados como parámetros.
+     * La cantidad tiene que ser mayor que 0.
+     *
+     * @param idRow id del producto en una lista a actualizar
+     * @param idProducto id del nuevo  producto
+     * @param cantidad nueva cantidad del producto en la lista
+     * @return verdad si la relación fue actualizada con éxito, falso en caso contrario
+     */
     public boolean updateProductInList(long idRow, long idProducto, int cantidad) {
         if(idRow > 0 && idProducto > 0 && cantidad > 0) {
             ContentValues args = new ContentValues();
@@ -371,10 +435,29 @@ public class DbAdapter {
         }
     }
 
+    /**
+     * Borra un producto de una lista de compra de la base de datos en la que la id de la relación
+     * enttre dicho producto y la lista coincide con el idRow pasado como parámetro.
+     *
+     * @param idRow id del producto de una lista a borrar
+     * @return verdad si es borrado, falso en caso contrario
+     */
     public boolean deleteProductInList(long idRow) {
         return mDb.delete(DATABASE_TABLE_CONTAINS, CONTAINS_KEY_ROWID+ "=" + idRow, null) > 0;
     }
 
+    /**
+     * Añade un producto a una lista de compra y también el tipo de producto
+     * con los nuevos datos proporcionados. El producto de una lista a actualizar es aquel cuyo
+     * rowId de la relación entre listas de compra y productos coincide con el proporcionado y
+     * se modifica el producto y la cantidad de la relación por los pasados como parámetros.
+     * La cantidad tiene que ser mayor que 0.
+     *
+     * @param idList id dela lista a la que se añade el producto
+     * @param idProduct id del producto a añadir
+     * @param cantidad cantidad del producto en la lista
+     * @return @return rowId o -1 si falla
+     */
     public long addProductToList(long idList, long idProduct, int cantidad){
         if(cantidad > 0 && idList > 0 && idProduct > 0) {
             ContentValues initialValues = new ContentValues();
@@ -388,6 +471,14 @@ public class DbAdapter {
     }
 
 
+    /**
+     * Crea una nueva lista de compra usando el nombre provisto. El nombre no puede ser
+     * la cadena vacía. Si la lista de compra es creada exitosamente, devuelve el rowId
+     * de esa lista de compra. En caso contrario devuelve -1 para indicar error.
+     *
+     * @param nombre nombre de la lista de compra
+     * @return rowId o -1 si falla
+     */
     public long createShoppingList(String nombre){
         if(nombre != null && !nombre.isEmpty()) {
             ContentValues initialValues = new ContentValues();
@@ -400,6 +491,15 @@ public class DbAdapter {
         }
     }
 
+    /**
+     * Actualiza la lista de compra con el nuevo nombre.  El nombre no puede ser
+     * la cadena vacía. La lista de compra a actualizar es aquella cuyo rowId coincide
+     * con el proporcionado y se modificada se título y cuerpo por los pasados como parámetros.
+     *
+     * @param rowId id de la nota a actualizar
+     * @param nombre nuevo título de la lista de compra
+     * @return verdad si la lista de compra fue actualizada con éxito, falso en caso contrario
+     */
     public boolean updateShoppingList(long rowId, String nombre) {
         if(nombre != null && !nombre.isEmpty()) {
             ContentValues args = new ContentValues();
@@ -410,7 +510,12 @@ public class DbAdapter {
         }
     }
 
-
+    /**
+     * Borra la lista de compra de la base de datos que tiene el rowId que se da como parámetro.
+     *
+     * @param rowId id de la lista de compra a borrar
+     * @return verdad si es borrada, falso en caso contrario
+     */
     public boolean deleteShoppingList(long rowId) {
         return mDb.delete(DATABASE_TABLE_LISTS, LIST_KEY_ROWID + "=" + rowId, null) > 0;
     }
