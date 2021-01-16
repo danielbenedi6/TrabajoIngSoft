@@ -215,7 +215,7 @@ public class DbAdapter {
      * @return rowId or -1 if failed
      */
     public long createProduct(String nombre, double precio, double peso) {
-        if(nombre != null && !nombre.isEmpty()) {
+        if(nombre != null && !nombre.isEmpty() && precio > 0 && peso > 0) {
             ContentValues initialValues = new ContentValues();
             initialValues.put(PRODUCT_KEY_NAME, nombre);
             initialValues.put(PRODUCT_KEY_PRECIO, precio);
@@ -349,7 +349,7 @@ public class DbAdapter {
      * @return true if the note was successfully updated, false otherwise
      */
     public boolean updateProduct(long rowId, String nombre, double precio, double peso) {
-        if(nombre != null && !nombre.isEmpty()) {
+        if(nombre != null && !nombre.isEmpty() && precio > 0 && peso > 0) {
             ContentValues args = new ContentValues();
             args.put(PRODUCT_KEY_NAME, nombre);
             args.put(PRODUCT_KEY_PRECIO, precio);

@@ -8,7 +8,7 @@ public class Test {
 
     public static void runTestProducts(DbAdapter nda){
         // Prueba va bien create
-        long id1 = nda.createProduct("producto_prueba", 0.0, 0.0);
+        long id1 = nda.createProduct("producto_prueba", 1.0, 1.0);
         if(id1 < 0){
             Log.d("PRODUCTOS: CASO 1", "ERROR");
         } else {
@@ -29,7 +29,7 @@ public class Test {
         }
 
         try {
-            long id3 = nda.createProduct("", 0.0, 0.0);
+            long id3 = nda.createProduct("", 1.0, 1.0);
             if (id3 < 0) {
                 Log.d("PRODUCTOS: CASO 3", "BIEN");
             } else {
@@ -37,6 +37,28 @@ public class Test {
             }
         } catch (Exception e){
             Log.d("PRODUCTOS: CASO 3", "EXCEPCION");
+        }
+
+        try {
+            long id3 = nda.createProduct("producto_prueba", 0.0, 1.0);
+            if (id3 < 0) {
+                Log.d("PRODUCTOS: CASO 4", "BIEN");
+            } else {
+                Log.d("PRODUCTOS: CASO 4", "MAL");
+            }
+        } catch (Exception e){
+            Log.d("PRODUCTOS: CASO 4", "EXCEPCION");
+        }
+
+        try {
+            long id3 = nda.createProduct("producto_prueba", 1.0, 0.0);
+            if (id3 < 0) {
+                Log.d("PRODUCTOS: CASO 5", "BIEN");
+            } else {
+                Log.d("PRODUCTOS: CASO 5", "MAL");
+            }
+        } catch (Exception e){
+            Log.d("PRODUCTOS: CASO 5", "EXCEPCION");
         }
         //No se puede probar este porque precio y peso no pueden ser null
         // (que seria la prueba equivalente)
@@ -59,46 +81,14 @@ public class Test {
         if(id1 > 0) {
             //Prueba va bien
             if(nda.updateProduct(id1,"producto_prueba_mod", 1.0, 1.0)){
-                Log.d("PRODUCTOS: CASO 4", "BIEN");
+                Log.d("PRODUCTOS: CASO 6", "BIEN");
             } else {
-                Log.d("PRODUCTOS: CASO 4", "MAL");
+                Log.d("PRODUCTOS: CASO 6", "MAL");
             }
 
             //Prueba va mal
             try {
                 if (!nda.updateProduct(id1, null, 1.0, 1.0)) {
-                    Log.d("PRODUCTOS: CASO 5", "BIEN");
-                } else {
-                    Log.d("PRODUCTOS: CASO 5", "MAL");
-                }
-            } catch (Exception e){
-                Log.d("PRODUCTOS: CASO 5", "EXCEPCION");
-            }
-
-            try {
-                if (!nda.updateProduct(id1, "", 1.0, 1.0)) {
-                    Log.d("PRODUCTOS: CASO 6", "BIEN");
-                } else {
-                    Log.d("PRODUCTOS: CASO 6", "MAL");
-                }
-            } catch (Exception e){
-                Log.d("PRODUCTOS: CASO 6", "EXCEPCION");
-            }
-
-            //Lo mismo que antes
-            /*
-            try {
-                if (!nda.updateProduct(id1, "hola", 1.0, 1.0)) {
-                    Log.d("CASO 8", "BIEN");
-                } else {
-                    Log.d("CASO 8", "MAL");
-                }
-            } catch (Exception e){
-                Log.d("CASO 8", "EXCEPCION");
-            }
-            */
-            try {
-                if (!nda.updateProduct(-1, "hola", 1.0, 1.0)) {
                     Log.d("PRODUCTOS: CASO 7", "BIEN");
                 } else {
                     Log.d("PRODUCTOS: CASO 7", "MAL");
@@ -107,26 +97,66 @@ public class Test {
                 Log.d("PRODUCTOS: CASO 7", "EXCEPCION");
             }
 
-        }
-
-        //Prueba delete (solo si create ha ido bien)
-        if(id1>0){
-            //Prueba va bien
-            if(nda.deleteProduct(id1)){
-                Log.d("PRODUCTOS: CASO 8", "BIEN");
-            } else {
-                Log.d("PRODUCTOS: CASO 8", "MAL");
+            try {
+                if (!nda.updateProduct(id1, "", 1.0, 1.0)) {
+                    Log.d("PRODUCTOS: CASO 8", "BIEN");
+                } else {
+                    Log.d("PRODUCTOS: CASO 8", "MAL");
+                }
+            } catch (Exception e){
+                Log.d("PRODUCTOS: CASO 8", "EXCEPCION");
             }
 
-            //Prueba va mal
             try {
-                if (!nda.deleteProduct(-1)) {
+                if (!nda.updateProduct(id1, "hola", 0.0, 1.0)) {
                     Log.d("PRODUCTOS: CASO 9", "BIEN");
                 } else {
                     Log.d("PRODUCTOS: CASO 9", "MAL");
                 }
             } catch (Exception e){
                 Log.d("PRODUCTOS: CASO 9", "EXCEPCION");
+            }
+
+            try {
+                if (!nda.updateProduct(id1, "hola", 1.0, 0.0)) {
+                    Log.d("PRODUCTOS: CASO 10", "BIEN");
+                } else {
+                    Log.d("PRODUCTOS: CASO 10", "MAL");
+                }
+            } catch (Exception e){
+                Log.d("PRODUCTOS: CASO 10", "EXCEPCION");
+            }
+
+            try {
+                if (!nda.updateProduct(-1, "producto_prueba", 1.0, 1.0)) {
+                    Log.d("PRODUCTOS: CASO 11", "BIEN");
+                } else {
+                    Log.d("PRODUCTOS: CASO 11", "MAL");
+                }
+            } catch (Exception e){
+                Log.d("PRODUCTOS: CASO 11", "EXCEPCION");
+            }
+
+        }
+
+        //Prueba delete (solo si create ha ido bien)
+        if(id1>0){
+            //Prueba va bien
+            if(nda.deleteProduct(id1)){
+                Log.d("PRODUCTOS: CASO 12", "BIEN");
+            } else {
+                Log.d("PRODUCTOS: CASO 12", "MAL");
+            }
+
+            //Prueba va mal
+            try {
+                if (!nda.deleteProduct(-1)) {
+                    Log.d("PRODUCTOS: CASO 13", "BIEN");
+                } else {
+                    Log.d("PRODUCTOS: CASO 13", "MAL");
+                }
+            } catch (Exception e){
+                Log.d("PRODUCTOS: CASO 13", "EXCEPCION");
             }
         }
     }
@@ -573,7 +603,7 @@ public class Test {
         int cantidad = 1;
         long id;
         long idLista = nda.createShoppingList("SOBRECARGA CANTIDAD");
-        long idProducto = nda.createProduct("SOBRECARGA CANTIDAD", 0, 0);
+        long idProducto = nda.createProduct("SOBRECARGA CANTIDAD", 1, 1);
         do{
             System.out.println("Next cantidad = " + cantidad);
             id = nda.addProductToList(idLista, idProducto, cantidad);
