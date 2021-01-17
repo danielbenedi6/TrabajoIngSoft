@@ -254,29 +254,59 @@ public class ShoppingListPad extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
+    /**
+     * Lanza un Intent para la vista de ListEdit sin pasarle ningún parámetro porque
+     * se utilizará para crear una lista.
+     */
     private void createList() {
         Intent i = new Intent(this, ListEdit.class);
         startActivityForResult(i, ACTIVITY_CREATE);
     }
 
-
+    /**
+     * Lanza un Intent para la vista de ListEdit pasándole como parámetro el
+     * id de una lista porque se utilizará para editarla.
+     *
+     * @param position posición de la lista a editar en el ListView
+     * @param id ID de la lista a editar
+     */
     protected void editList(int position, long id) {
         Intent i = new Intent(this, ListEdit.class);
         i.putExtra(DbAdapter.LIST_KEY_ROWID, id);
         startActivityForResult(i, ACTIVITY_EDIT);
     }
 
+    /**
+     * Lanza un Intent para la vista de ShoppingListShow pasándole como parámetro
+     * el id de una lista porque se utilizará para visualizarla.
+     *
+     * @param position posición de la lista a editar en el ListView
+     * @param id ID de la lista a visualizar
+     */
     protected void showList(int position, long id) {
         Intent i = new Intent(this, ShoppingListShow.class);
         i.putExtra(DbAdapter.LIST_KEY_ROWID, id);
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Lanza un Intent para la vista de ProductPad pasándole sin pasarle ningñun
+     * parámetro porque no es necesario
+     */
     private void showProducts(){
         Intent i = new Intent(this, ProductPad.class);
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Crea la clase SendAbstractionImpl para enviar la nota con ID id
+     * por correo electrónico. Utilizará de asunto el nombre de la lista y
+     * el cuerpo del mensaje será una lista de productos con su cantidad separados
+     * por un salto de linea.
+     *
+     * @param position posición de la lista a editar en el ListView
+     * @param id ID de la lista a enviar
+     */
     private void sendList(int position, long id){
         SendAbstraction sa = new SendAbstractionImpl(this, "EMAIL");
         String subject = "", body = "";
@@ -296,6 +326,15 @@ public class ShoppingListPad extends AppCompatActivity {
         sa.send(subject, body);
     }
 
+    /**
+     * Método que se ejecuta cuando se vuelve a la actividad en la que está
+     * tras acabar la actividad lanzada. Se encarga de mostrar nuevamente las
+     * listas de la base de datos.
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);

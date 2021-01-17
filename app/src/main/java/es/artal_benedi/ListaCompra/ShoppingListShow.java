@@ -18,7 +18,12 @@ public class ShoppingListShow extends AppCompatActivity {
 
 
 
-    /** Called when the activity is first created. */
+    /**
+     * Llamado cuando la actividad es creada. Se encarga de preparar
+     * el diseño de la actividad y de la conexión con la base de datos.
+     *
+     * @param savedInstanceState estado de la instacia guardada
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -39,6 +44,10 @@ public class ShoppingListShow extends AppCompatActivity {
 
     }
 
+    /**
+     * Busca los datos asociados a la lista de compra seleccionada y que se
+     * quiere visualizar y los muestra en los widget correspondientes.
+     */
     private void populateFields(){
         if(mRowId != null){
             Cursor note = mDbHelper.fetchShoppingList(mRowId);
@@ -50,6 +59,11 @@ public class ShoppingListShow extends AppCompatActivity {
         }
     }
 
+    /**
+     * Busca todos los productos de la lista en la base de datos y los muestra por pantalla haciendo
+     * uso del ListView de la actividad. Cada elemento del ListView tiene el nombre del producto y
+     * su cantidad.
+     */
     private void fillData() {
         // Get all of the notes from the database and create the item list
         Cursor notesCursor = mDbHelper.fetchProductsShoppingList(mRowId);

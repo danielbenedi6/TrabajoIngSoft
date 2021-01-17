@@ -4,8 +4,13 @@ import android.database.Cursor;
 import android.util.Log;
 
 public class Test {
-    //private static long myId = 0;
 
+    /**
+     * Realizará las pruebas para las clases de equivalencia para los productos: crear, actualizar
+     * y borrar.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void runTestProducts(DbAdapter nda){
         // Prueba va bien create
         long id1 = nda.createProduct("producto_prueba", 1.0, 1.0);
@@ -161,6 +166,12 @@ public class Test {
         }
     }
 
+    /**
+     * Realizará las pruebas para las clases de equivalencia para las listas: crear, actualizar
+     * y borrar.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void runTestListas(DbAdapter nda){
         // Prueba va bien create
         long id1 = nda.createShoppingList("lista_prueba");
@@ -259,6 +270,12 @@ public class Test {
         }
     }
 
+    /**
+     * Realizará las pruebas para las clases de equivalencia para los productos en una lista de la
+     * compra: crear, actualizar y borrar.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void runTestProductosLista(DbAdapter nda){
         long idl = nda.createShoppingList("lista_prueba");
         long idp = nda.createProduct("producto_prueba", 1.0, 1.0);
@@ -382,6 +399,12 @@ public class Test {
         }
     }
 
+
+    /**
+     * Crea 1000 Productos para poder realizar las pruebas de volumen
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void casiPetardoTest(DbAdapter nda){
         boolean error = false;
         int i = 0;
@@ -406,6 +429,11 @@ public class Test {
         }
     }
 
+    /**
+     * Crea 1000 Listas para poder realizar las pruebas de volumen
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void casiPetardoListasTest(DbAdapter nda){
         boolean error = false;
         int i = 0;
@@ -430,6 +458,11 @@ public class Test {
         }
     }
 
+    /**
+     * Borra las listas creadas para poder realizar las pruebas de volumen
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void borrarCasiPetardoListasTest(DbAdapter nda){
         Cursor cursor = nda.fetchAllShoppingLists();
         try{
@@ -450,6 +483,11 @@ public class Test {
 
     }
 
+    /**
+     * Borra los productos creados para poder realizar las pruebas de volumen
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void borrarCasiPetardoTest(DbAdapter nda){
         Cursor cursor = nda.fetchAllProducts();
         try{
@@ -470,6 +508,13 @@ public class Test {
 
     }
 
+
+    /**
+     * Realiza una prueba de sobrecarga para descubrir dónde está el límite de caracteres en el
+     * nombre de una lista de la compra
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void crearTestSobrecargaLongitudNombre(DbAdapter nda){
         long id, count = 0;
         String append = "aaaaaaaaaa";
@@ -482,25 +527,13 @@ public class Test {
         }while(id > 0);
         System.out.println("Resultado final: n = "+ count);
     }
-    public static void borrarTestSobrecargaLongitudNombre(DbAdapter nda){
-        Cursor cursor = nda.fetchAllShoppingLists();
-        try {
-            int i =0;
-            while(cursor.moveToNext()) {
-                if (cursor.getString(cursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_NAME)).contains("PRUEBA_SOBRECARGA: ")) {
-                    nda.deleteShoppingList(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_ROWID)));
-                    i++;
-                }
-            }
-            System.out.println("borrarTestSobrecargaLongitudNombre: "+i);
-        }catch( Exception e){
 
-        }finally{
-            cursor.close();
-        }
-
-    }
-
+    /**
+     * Realiza una prueba de sobrecarga para descubrir dónde está el límite de lista de la compra
+     * que soporta el sistema.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void crearTestSobrecargaNumeroListas(DbAdapter nda){
         long id, count = 0;
         System.out.println("Número de listas");
@@ -515,25 +548,13 @@ public class Test {
             System.out.println("Resultado final: n = " + count);
         }
     }
-    public static void borrarTestSobrecargaNumeroListas(DbAdapter nda){
-        Cursor cursor = nda.fetchAllShoppingLists();
-        try {
-            int i =0;
-            while(cursor.moveToNext()) {
-                if (cursor.getString(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_NAME)).contains("PRUEBA_SOBRECARGA: ")) {
-                    nda.deleteShoppingList(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_ROWID)));
-                    i++;
-                }
-            }
-            System.out.println("borrarTestSobrecargaLongitudNombre: "+i);
-        }catch( Exception e){
 
-        }finally{
-            cursor.close();
-        }
-
-    }
-
+    /**
+     * Realiza una prueba de sobrecarga para descubrir dónde está el límite de productos
+     * que soporta el sistema.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void crearTestSobrecargaNumeroProductos(DbAdapter nda){
         long id, count = 0;
         System.out.println("Número de productos");
@@ -549,24 +570,13 @@ public class Test {
         }
     }
 
-    public static void borrarTestSobrecargaNumeroProductos(DbAdapter nda) {
-        Cursor cursor = nda.fetchAllProducts();
-        try {
-            int i = 0;
-            while (cursor.moveToNext()) {
-                if (cursor.getString(cursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_NAME)).equals("PRODUCTO SOBRECARGA")) {
-                    nda.deleteShoppingList(cursor.getLong(cursor.getColumnIndexOrThrow(DbAdapter.LIST_KEY_ROWID)));
-                    i++;
-                }
-            }
-            System.out.println("borrarTestSobrecargaLongitudNombre: " + i);
-        } catch (Exception e) {
 
-        } finally {
-            cursor.close();
-        }
-    }
-
+    /**
+     * Realiza una prueba de sobrecarga para descubrir dónde está el límite de productos que puede
+     * haber en las listas de la compra que soporta el sistema.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void TestSobrecargaAsociarProductosListas(DbAdapter nda){
         Cursor productos = nda.fetchAllProducts();
         Cursor listas = nda.fetchAllShoppingLists();
@@ -581,6 +591,12 @@ public class Test {
         }
     }
 
+    /**
+     * Realiza una prueba de sobrecarga para descubrir dónde está el límite peso que puede tener un
+     * producto.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void TestSobrecargaPeso(DbAdapter nda){
         long peso = 1, id;
         do{
@@ -590,6 +606,12 @@ public class Test {
         }while(id > 0);
     }
 
+    /**
+     * Realiza una prueba de sobrecarga para descubrir dónde está el límite precio que puede tener un
+     * producto.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void TestSobrecargaPrecio(DbAdapter nda){
         long precio = 1, id;
         do{
@@ -599,6 +621,12 @@ public class Test {
         }while(id > 0);
     }
 
+    /**
+     * Realiza una prueba de sobrecarga para descubrir dónde está el límite cantidad de un producto
+     * que puede tener una lista de la compra.
+     *
+     * @param nda Objeto del adaptador de la BD
+     */
     public static void TestSobrecargaCantidad(DbAdapter nda){
         int cantidad = 1;
         long id;
