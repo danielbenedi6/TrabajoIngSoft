@@ -32,7 +32,7 @@ public class ShoppingListPad extends AppCompatActivity {
     private static final int ORDER_NAME_ID = Menu.FIRST + 6;
     private static final int ORDER_PRICE_ID = Menu.FIRST + 7;
     private static final int ORDER_WEIGHT_ID = Menu.FIRST + 8;
-    private static final int PRUEBA_ID = Menu.FIRST + 9;
+/*    private static final int PRUEBA_ID = Menu.FIRST + 9;
     private static final int BORRAR_PRUEBA_ID = Menu.FIRST + 10;
     private static final int SOBRECARGA_ID = Menu.FIRST + 11;
     private static final int BORRAR_SOBRECARGA_ID = Menu.FIRST + 12;
@@ -41,7 +41,7 @@ public class ShoppingListPad extends AppCompatActivity {
     private static final int SOBRECARGA_ASOCIAR = Menu.FIRST + 15;
     private static final int SOBRECARGA_PESO = Menu.FIRST + 16;
     private static final int SOBRECARGA_PRECIO = Menu.FIRST + 17;
-    private static final int SOBRECARGA_CANTIDAD = Menu.FIRST + 18;
+    private static final int SOBRECARGA_CANTIDAD = Menu.FIRST + 18;*/
 
 
 
@@ -119,7 +119,7 @@ public class ShoppingListPad extends AppCompatActivity {
         menu.add(Menu.NONE, ORDER_NAME_ID, Menu.NONE, R.string.order_name);
         menu.add(Menu.NONE, ORDER_PRICE_ID, Menu.NONE, R.string.order_price);
         menu.add(Menu.NONE, ORDER_WEIGHT_ID, Menu.NONE, R.string.order_weight);
-        menu.add(Menu.NONE, PRUEBA_ID, Menu.NONE, "Test");
+/*        menu.add(Menu.NONE, PRUEBA_ID, Menu.NONE, "Test");
         menu.add(Menu.NONE, BORRAR_PRUEBA_ID, Menu.NONE, "Delete Test");
         menu.add(Menu.NONE, SOBRECARGA_ID, Menu.NONE, "Sobrecarga Listas");
         menu.add(Menu.NONE, BORRAR_SOBRECARGA_ID, Menu.NONE, "Eliminar Sobrecarga Listas");
@@ -128,7 +128,7 @@ public class ShoppingListPad extends AppCompatActivity {
         menu.add(Menu.NONE, SOBRECARGA_ASOCIAR, Menu.NONE, "Asociar Productos y Listas");
         menu.add(Menu.NONE, SOBRECARGA_PESO, Menu.NONE, "Sobrecarga Peso");
         menu.add(Menu.NONE, SOBRECARGA_PRECIO, Menu.NONE, "Sobrecarga Precio");
-        menu.add(Menu.NONE, SOBRECARGA_CANTIDAD, Menu.NONE, "Sobrecarga Cantidad");
+        menu.add(Menu.NONE, SOBRECARGA_CANTIDAD, Menu.NONE, "Sobrecarga Cantidad");*/
         return result;
     }
 
@@ -158,7 +158,7 @@ public class ShoppingListPad extends AppCompatActivity {
             case ORDER_WEIGHT_ID:
                 fillDataOrdered(DbAdapter.LIST_KEY_PESO);
                 return true;
-            case PRUEBA_ID:
+/*            case PRUEBA_ID:
                 Test.casiPetardoListasTest(mDbHelper);
                 fillData();
                 return true;
@@ -197,7 +197,7 @@ public class ShoppingListPad extends AppCompatActivity {
             case SOBRECARGA_CANTIDAD:
                 Test.TestSobrecargaCantidad(mDbHelper);
                 fillData();
-                return true;
+                return true;*/
         }
         return super.onOptionsItemSelected(item);
     }
