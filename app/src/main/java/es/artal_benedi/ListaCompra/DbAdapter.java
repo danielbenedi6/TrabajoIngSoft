@@ -214,7 +214,7 @@ public class DbAdapter {
      * @return rowId o -1 si falla
      */
     public long createProduct(String nombre, double precio, double peso) {
-        if(nombre != null && !nombre.isEmpty() && precio >= 0 && peso > 0) {
+        if(nombre != null && !nombre.isEmpty() && precio > 0 && peso > 0) {
             ContentValues initialValues = new ContentValues();
             initialValues.put(PRODUCT_KEY_NAME, nombre);
             initialValues.put(PRODUCT_KEY_PRECIO, precio);

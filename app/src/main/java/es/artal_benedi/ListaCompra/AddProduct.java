@@ -32,7 +32,7 @@ public class AddProduct extends AppCompatActivity {
     private class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int pos, long id) {
-            System.out.println("AL MENOS APARECE " + Long.toString(id));
+            System.out.println("AL MENOS APARECE " + id);
             mProductId = id;
         }
 
@@ -57,7 +57,6 @@ public class AddProduct extends AppCompatActivity {
         mDbHelper.open();
 
         setContentView(R.layout.activity_add_producto);
-        setTitle(R.string.edit_note);
 
         mAmountText = (EditText) findViewById(R.id.editTextNumber);
         mSpinner = (Spinner) findViewById(R.id.spinner);
@@ -91,7 +90,6 @@ public class AddProduct extends AppCompatActivity {
 
             public void onClick(View view) {
                 setResult(RESULT_OK);
-                System.out.println("klk canchero");
                 finish();
             }
 
@@ -123,7 +121,8 @@ public class AddProduct extends AppCompatActivity {
             notesCursor.moveToFirst();
             boolean encontrado = false;
             for(int i = 0; i<notesCursor.getCount() && !encontrado; i++){
-                if(mDbHelper.fetchProductIdInList(mContainsId).intValue() == notesCursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_ROWID)){
+                if(mDbHelper.fetchProductIdInList(mContainsId) ==
+                        notesCursor.getLong(notesCursor.getColumnIndexOrThrow(DbAdapter.PRODUCT_KEY_ROWID))){
                     mSpinner.setSelection(i);
                     encontrado = true;
                 }
@@ -184,8 +183,6 @@ public class AddProduct extends AppCompatActivity {
      */
     private void saveState(){
         System.out.format("AL MENOS LLEGA %s\n", mContainsId);
-        String name = mAmountText.getText().toString();
-        //TODO amount 0 ahora no se guarda, asi que lo cambio por 1. Si tienes una propuesta mejor hazla
         int amount = 1;
         if (!mAmountText.getText().toString().isEmpty())
             amount = Integer.parseInt(mAmountText.getText().toString());

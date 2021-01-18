@@ -22,7 +22,12 @@
     <string name="body">Cuerpo</string>
     <string name="confirm">Confirmar</string>
     <string name="edit_note">Editar Nota</string>
-    <string name="title_activity_note_edit">Editor de Producto</string>
+    <string name="title_activity_product_edit">Editor de Producto</string>
+    <string name="title_activity_product_pad">Listado de Productos</string>
+    <string name="title_activity_list_pad">Listado de Listas de compra</string>
+    <string name="title_activity_list_edit">Editor de Lista de compra</string>
+    <string name="title_activity_add_product">Editor de Producto</string>
+    <string name="title_activity_list_show">Visualizador de Lista de compra</string>
     <string name="no_products">No Hay Productos Todavía</string>
     <string name="product">Producto:</string>
     <string name="amount">Cantidad:</string>

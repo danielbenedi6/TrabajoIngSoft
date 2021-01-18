@@ -279,6 +279,5 @@ public class ListEdit extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         System.out.println("RowID ??");
         fillData();
-        //TODO añadir populateFields()??
     }
 }

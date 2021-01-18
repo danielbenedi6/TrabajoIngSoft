@@ -101,8 +101,8 @@ public class ProductPad extends AppCompatActivity {
         menu.add(Menu.NONE, ORDER_NAME_ID, Menu.NONE, R.string.order_name);
         menu.add(Menu.NONE, ORDER_PRICE_ID, Menu.NONE, R.string.order_price);
         menu.add(Menu.NONE, ORDER_WEIGHT_ID, Menu.NONE, R.string.order_weight);
-        /*menu.add(Menu.NONE, PRUEBA_ID, Menu.NONE, "Test");
-        menu.add(Menu.NONE, BORRAR_PRUEBA_ID, Menu.NONE, "Delete Test");*/
+        menu.add(Menu.NONE, PRUEBA_ID, Menu.NONE, "Test");
+        menu.add(Menu.NONE, BORRAR_PRUEBA_ID, Menu.NONE, "Delete Test");
         return result;
     }
 

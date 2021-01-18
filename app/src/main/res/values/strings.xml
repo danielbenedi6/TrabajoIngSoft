@@ -20,7 +20,12 @@
     <string name="body">Body</string>
     <string name="confirm">Confirm</string>
     <string name="edit_note">Edit Note</string>
-    <string name="title_activity_note_edit">EditNote</string>
+    <string name="title_activity_product_edit">Edit Product</string>
+    <string name="title_activity_product_pad">Product List</string>
+    <string name="title_activity_list_pad">List of Shopping Lists</string>
+    <string name="title_activity_list_edit">Edit Shopping List</string>
+    <string name="title_activity_add_product">Edit Product</string>
+    <string name="title_activity_list_show">Show Shopping List</string>
     <string name="menu_insert_product">Add Product</string>
     <string name="no_products">No Products Yet</string>
     <string name="product">Product:</string>
